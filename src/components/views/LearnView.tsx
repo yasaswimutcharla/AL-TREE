@@ -105,21 +105,21 @@ export const LearnView: React.FC<LearnViewProps> = ({
           onClick={() => setIsMobileSyllabusOpen(!isMobileSyllabusOpen)}
           className={`w-full p-4 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
             isDarkMode
-              ? 'bg-[#0e1424] border-violet-900/50 text-slate-100'
+              ? 'bg-[#0a1020] border-blue-900/50 text-slate-100'
               : 'bg-white border-slate-200 text-slate-900 shadow-xs'
           }`}
         >
           <div className="flex items-center gap-3">
             <div
               className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                isDarkMode ? 'bg-violet-600/30 text-violet-400' : 'bg-indigo-100 text-indigo-600'
+                isDarkMode ? 'bg-blue-600/30 text-blue-400' : 'bg-blue-100 text-blue-600'
               }`}
             >
               <ListFilter className="w-4 h-4" />
             </div>
             <div className="text-left">
               <div className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
-                isDarkMode ? 'text-violet-400' : 'text-indigo-700'
+                isDarkMode ? 'text-blue-400' : 'text-blue-700'
               }`}>
                 Table of Contents · <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>0{currentTopic.index}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>0{TREE_TOPICS.length}</span>
               </div>
@@ -131,11 +131,11 @@ export const LearnView: React.FC<LearnViewProps> = ({
 
           <div className="flex items-center gap-2">
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-              isDarkMode ? 'bg-violet-600/20 text-slate-300' : 'bg-indigo-100 text-indigo-800'
+              isDarkMode ? 'bg-blue-600/20 text-slate-300' : 'bg-blue-100 text-blue-800'
             }`}>
               <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>{completedCount}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>{TREE_TOPICS.length}</span> Done
             </span>
-            <span className={`text-xs font-bold ${isDarkMode ? 'text-violet-400' : 'text-indigo-700'}`}>
+            <span className={`text-xs font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-700'}`}>
               {isMobileSyllabusOpen ? 'Hide ▲' : 'Browse ▼'}
             </span>
           </div>
@@ -156,23 +156,23 @@ export const LearnView: React.FC<LearnViewProps> = ({
           <div
             className={`p-5 rounded-3xl border transition-all duration-200 ${
               isDarkMode
-                ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-xl shadow-violet-950/20'
+                ? 'bg-[#0a1020] border-blue-900/40 text-slate-100 shadow-xl shadow-blue-950/20'
                 : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
             }`}
           >
             {/* TOC Header */}
-            <div className={`pb-3 border-b ${isDarkMode ? 'border-violet-950/60' : 'border-slate-200'} mb-4`}>
+            <div className={`pb-3 border-b ${isDarkMode ? 'border-blue-950/60' : 'border-slate-200'} mb-4`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                      isDarkMode ? 'bg-violet-600/30 text-violet-300' : 'bg-indigo-100 text-indigo-700'
+                      isDarkMode ? 'bg-blue-600/30 text-blue-300' : 'bg-blue-100 text-blue-700'
                     }`}
                   >
                     <ListFilter className="w-4 h-4" />
                   </div>
                   <h2 className={`text-xs font-bold font-mono uppercase tracking-widest ${
-                    isDarkMode ? 'text-violet-400' : 'text-indigo-800'
+                    isDarkMode ? 'text-blue-400' : 'text-blue-800'
                   }`}>
                     Table of Contents
                   </h2>
@@ -181,8 +181,8 @@ export const LearnView: React.FC<LearnViewProps> = ({
                   id="toc-completion-counter"
                   className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md ${
                     isDarkMode
-                      ? 'text-white bg-violet-600/20 border border-violet-500/30'
-                      : 'text-indigo-800 bg-indigo-50 border border-indigo-200'
+                      ? 'text-white bg-blue-600/20 border border-blue-500/30'
+                      : 'text-blue-800 bg-blue-50 border border-blue-200'
                   }`}
                 >
                   <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>{completedCount}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>{TREE_TOPICS.length}</span>
@@ -209,18 +209,18 @@ export const LearnView: React.FC<LearnViewProps> = ({
                     className={`w-full text-left p-3.5 rounded-2xl border transition-all duration-150 flex items-center justify-between group cursor-pointer ${
                       isSelected
                         ? isDarkMode
-                          ? 'bg-violet-950/60 border-violet-500/70 text-white shadow-md shadow-violet-950/50 ring-1 ring-violet-500/40'
-                          : 'bg-indigo-50 border-indigo-400 text-indigo-950 shadow-xs ring-1 ring-indigo-300'
+                          ? 'bg-blue-950/60 border-blue-500/70 text-white shadow-md shadow-blue-950/50 ring-1 ring-blue-500/40'
+                          : 'bg-blue-50 border-blue-400 text-blue-950 shadow-xs ring-1 ring-blue-300'
                         : isDarkMode
-                        ? 'bg-[#090d18]/80 border-violet-950/70 hover:bg-[#121929] hover:border-violet-700/50 text-slate-300'
-                        : 'bg-slate-50/80 border-slate-200/80 hover:bg-white hover:border-indigo-300 text-slate-800 hover:text-slate-950 shadow-2xs'
+                        ? 'bg-[#080d1a]/80 border-blue-950/70 hover:bg-[#0f172a] hover:border-blue-700/50 text-slate-300'
+                        : 'bg-slate-50/80 border-slate-200/80 hover:bg-white hover:border-blue-300 text-slate-800 hover:text-slate-950 shadow-2xs'
                     }`}
                   >
                     <div className="min-w-0 flex-1 pr-2">
                       <div className="flex items-baseline gap-2">
                         <span
                           className={`text-xs font-mono font-bold shrink-0 ${
-                            isDarkMode ? 'text-white font-extrabold' : isSelected ? 'text-indigo-700 font-extrabold' : 'text-slate-500 font-bold group-hover:text-slate-800'
+                            isDarkMode ? 'text-white font-extrabold' : isSelected ? 'text-blue-700 font-extrabold' : 'text-slate-500 font-bold group-hover:text-slate-800'
                           }`}
                         >
                           {formattedNum}.
@@ -230,8 +230,8 @@ export const LearnView: React.FC<LearnViewProps> = ({
                             isSelected
                               ? isDarkMode
                                 ? 'text-white'
-                                : 'text-indigo-950 font-extrabold'
-                              : 'text-slate-800 group-hover:text-indigo-950'
+                                : 'text-blue-950 font-extrabold'
+                              : 'text-slate-800 group-hover:text-blue-950'
                           }`}
                         >
                           {topic.title.replace(/^\d+\.\s*/, '')}
@@ -241,8 +241,8 @@ export const LearnView: React.FC<LearnViewProps> = ({
                         className={`text-[11px] mt-0.5 truncate pl-6 ${
                           isSelected
                             ? isDarkMode
-                              ? 'text-violet-200/80'
-                              : 'text-indigo-800 font-medium'
+                              ? 'text-blue-200/80'
+                              : 'text-blue-800 font-medium'
                             : 'text-slate-500 group-hover:text-slate-700 font-medium'
                         }`}
                       >

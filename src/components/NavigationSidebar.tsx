@@ -55,14 +55,14 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
   })();
 
   // Activity counts matching lesson curriculum
-  const totalActivities = 22;
+  const totalActivities = 23;
   const learnTotal = 7;
-  const vizTotal = 1;
+  const vizTotal = 1; // Exactly 1 video lesson for visualize
   const quizTotal = 14;
 
   // Real dynamic completion
   const learnCompleted = Math.min(completedTopics.length, learnTotal);
-  const vizCompleted = isVideoDone ? 1 : (completedVisualizations.length > 0 ? 1 : 0);
+  const vizCompleted = isVideoDone ? 1 : 0;
   const quizCompleted = quizProgress ? Math.min(quizProgress.completed, quizTotal) : (() => {
     try {
       const raw = getUserItem(effectiveUserId, 'quiz_progress');
@@ -73,23 +73,23 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
     return 0;
   })();
 
-  const totalCompleted = learnCompleted + vizCompleted + quizCompleted;
+  const totalCompleted = Math.min(totalActivities, learnCompleted + vizCompleted + quizCompleted);
   const overallPercent = Math.min(100, Math.round((totalCompleted / totalActivities) * 100));
 
   const getBadgeValue = (id: NavItem): string => {
     switch (id) {
       case 'home':
-        return `${overallPercent}%`;
+        return `${totalCompleted} / 23`;
       case 'learn':
         return `${learnCompleted} / ${learnTotal}`;
       case 'visualize':
-        return `${vizCompleted} / ${vizTotal}`;
+        return `${vizCompleted} / 1`;
       case 'quiz':
         return `${quizCompleted} / ${quizTotal}`;
       case 'progress':
         return `${overallPercent}%`;
       default:
-        return '0%';
+        return `${totalCompleted} / 23`;
     }
   };
 
@@ -193,20 +193,20 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                     isActive
                       ? isDarkMode
                         ? 'bg-zinc-900 border-zinc-800 text-white font-semibold'
-                        : 'bg-indigo-50 border-indigo-200 text-[#1E1B4B] font-bold shadow-xs'
+                        : 'bg-blue-50 border-blue-200 text-[#0f172a] font-bold shadow-xs'
                       : isDarkMode
                       ? 'text-slate-400 hover:text-slate-100 hover:bg-zinc-900/60 border-transparent font-medium'
                       : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/80 border-transparent font-medium'
                   }`}
                 >
-                  {/* Icon Container: vibrant rounded square for active; soft bordered square for inactive */}
+                  {/* Icon Container: AlgoLearn gradient for active; soft bordered square for inactive */}
                   <div
                     className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 transition-all ${
                       isActive
-                        ? 'bg-[#4F46E5] text-white shadow-sm'
+                        ? 'bg-gradient-to-r from-[#0066FF] to-[#2563EB] text-white shadow-md shadow-blue-500/20'
                         : isDarkMode
-                        ? 'bg-zinc-950 border border-zinc-800 text-slate-400 group-hover:text-indigo-400 group-hover:border-zinc-700'
-                        : 'bg-slate-50 border border-slate-200 text-slate-600 group-hover:text-indigo-600 group-hover:border-indigo-200 group-hover:bg-indigo-50/50'
+                        ? 'bg-zinc-950 border border-zinc-800 text-slate-400 group-hover:text-blue-400 group-hover:border-zinc-700'
+                        : 'bg-slate-50 border border-slate-200 text-slate-600 group-hover:text-blue-600 group-hover:border-blue-200 group-hover:bg-blue-50/50'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -218,7 +218,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                       isActive
                         ? isDarkMode
                           ? 'text-white'
-                          : 'text-[#1E1B4B]'
+                          : 'text-[#0f172a]'
                         : isDarkMode
                         ? 'text-slate-300 group-hover:text-white'
                         : 'text-slate-800 group-hover:text-slate-950'
@@ -227,7 +227,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                     {item.label}
                   </span>
 
-                  {/* Progress Badge Pill - Only shown when cursor enters navigation menu */}
+                  {/* Progress Badge Pill - Only appears when cursor moves to the navigation menu */}
                   {isNavHovered && (
                     <span
                       className={`ml-auto text-xs font-mono font-bold px-2.5 py-0.5 rounded-full select-none transition-all duration-200 animate-fadeIn ${
@@ -237,11 +237,11 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                             : 'bg-amber-100 text-amber-900 border border-amber-300'
                           : isActive
                           ? isDarkMode
-                            ? 'bg-zinc-800 text-indigo-300'
-                            : 'bg-indigo-100 text-indigo-800 border border-indigo-200'
+                            ? 'bg-zinc-800 text-blue-300 border border-zinc-700'
+                            : 'bg-blue-100 text-blue-800 border border-blue-200'
                           : isDarkMode
-                          ? 'bg-zinc-950 text-blue-400 group-hover:bg-zinc-800'
-                          : 'bg-slate-100 text-slate-700 group-hover:bg-indigo-100 group-hover:text-indigo-800 border border-slate-200'
+                          ? 'bg-zinc-950 text-blue-400 group-hover:bg-zinc-800 border border-zinc-800'
+                          : 'bg-slate-100 text-slate-700 group-hover:bg-blue-100 group-hover:text-blue-800 border border-slate-200'
                       }`}
                     >
                       {badge}

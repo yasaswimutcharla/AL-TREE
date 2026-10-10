@@ -322,8 +322,8 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
           <div
             className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center border shrink-0 ${
               isDarkMode
-                ? 'bg-violet-950/60 border-violet-800/40 text-violet-400'
-                : 'bg-violet-50 border-violet-200 text-violet-600'
+                ? 'bg-blue-950/60 border-blue-800/40 text-blue-400'
+                : 'bg-blue-50 border-blue-200 text-blue-600'
             }`}
           >
             <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -371,7 +371,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
         id="visualize-single-video-card"
         className={`p-6 sm:p-8 rounded-3xl border transition-all duration-200 shadow-xl ${
           isDarkMode
-            ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-violet-950/20'
+            ? 'bg-[#0a1020] border-blue-900/40 text-slate-100 shadow-blue-950/20'
             : 'bg-white border-slate-200/90 text-slate-900 shadow-slate-200/70'
         }`}
       >
@@ -381,8 +381,8 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
             <span
               className={`text-[11px] sm:text-xs font-bold font-mono uppercase tracking-wider px-3 py-1 rounded-full border ${
                 isDarkMode
-                  ? 'bg-violet-950/60 border-violet-800/50 text-violet-300'
-                  : 'bg-violet-50 border-violet-200 text-violet-700'
+                  ? 'bg-blue-950/60 border-blue-800/50 text-blue-300'
+                  : 'bg-blue-50 border-blue-200 text-blue-700'
               }`}
             >
               TREES — NON-LINEAR DATA STRUCTURE
@@ -418,7 +418,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
         <div
           className={`p-4 rounded-2xl border mb-6 flex flex-wrap items-center justify-between gap-3 ${
             isDarkMode
-              ? 'bg-[#090d18] border-violet-950/70'
+              ? 'bg-[#080d1a] border-blue-950/70'
               : 'bg-slate-50 border-slate-200/80'
           }`}
         >
@@ -451,6 +451,21 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
               </span>
             )}
           </div>
+
+          {/* Visualizations count (0/23 not in percentage) */}
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-semibold ${isDarkMode ? 'opacity-75' : 'text-slate-700'}`}>Visualizations:</span>
+            <span
+              id="visualize-count-indicator"
+              className={`inline-flex items-center gap-1 text-xs font-bold font-mono px-3 py-1 rounded-full border ${
+                isDarkMode
+                  ? 'bg-blue-950/60 border-blue-800/60 text-blue-300 font-extrabold'
+                  : 'bg-blue-50 border-blue-200 text-blue-700 font-extrabold'
+              }`}
+            >
+              {isVideoCompleted ? '1 / 1' : '0 / 1'}
+            </span>
+          </div>
         </div>
 
         {/* Subtopics Section: 9 small, neat labels neatly arranged below description */}
@@ -464,7 +479,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
                 key={subtopic}
                 className={`px-3 py-1 rounded-xl text-xs font-medium border transition-colors ${
                   isDarkMode
-                    ? 'bg-[#121829] border-violet-950/80 text-slate-300 hover:border-violet-700/60'
+                    ? 'bg-[#0e1526] border-blue-950/80 text-slate-300 hover:border-blue-600/60'
                     : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-blue-50/50'
                 }`}
               >
@@ -479,7 +494,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
           {/* Video Preview Canvas with Play Button */}
           <div
             onClick={handleOpenVideoModal}
-            className="relative w-full aspect-video sm:aspect-[21/9] max-h-72 rounded-2xl overflow-hidden border border-violet-950/50 bg-black cursor-pointer group shadow-inner"
+            className="relative w-full aspect-video sm:aspect-[21/9] max-h-72 rounded-2xl overflow-hidden border border-blue-950/50 bg-black cursor-pointer group shadow-inner"
           >
             <img
               src="/videos/poster.jpg"
@@ -550,7 +565,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
 
             {/* Title & Lesson tag */}
             <div className="min-w-0 text-center hidden md:block">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-violet-400">
+              <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-400">
                 TREES — NON-LINEAR DATA STRUCTURE · LESSON 01
               </div>
               <h2 className="text-sm font-extrabold text-white truncate">

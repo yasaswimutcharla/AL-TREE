@@ -18,9 +18,14 @@ import { AlgoLearnCapIcon } from '../AlgoLearnLogo';
 interface HomeViewProps {
   onNavigate: (nav: NavItem, topicId?: TopicId) => void;
   isDarkMode: boolean;
+  completedActivitiesCount?: number;
 }
 
-export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, isDarkMode }) => {
+export const HomeView: React.FC<HomeViewProps> = ({
+  onNavigate,
+  isDarkMode,
+  completedActivitiesCount = 0
+}) => {
   return (
     <div className="max-w-5xl mx-auto space-y-8 py-2">
       {/* ==================================================================== */}
@@ -43,13 +48,17 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, isDarkMode }) =>
           <div className="lg:col-span-7 space-y-4">
             <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase border ${
               isDarkMode
-                ? 'bg-zinc-900/90 text-indigo-300 border-zinc-800'
-                : 'bg-indigo-50 text-indigo-800 border-indigo-200 font-bold'
+                ? 'bg-zinc-900/90 text-blue-300 border-zinc-800'
+                : 'bg-blue-50 text-blue-800 border-blue-200 font-bold'
             }`}>
               <AlgoLearnCapIcon isDark={isDarkMode} size={18} className="shrink-0" />
               <span className="font-extrabold bg-gradient-to-r from-[#2563EB] to-[#7C3AED] bg-clip-text text-transparent">AlgoLearn</span>
               <span className="opacity-40">•</span>
               <span>TREES • MODULE 01 • CHAPTER 01</span>
+              <span className="opacity-40">•</span>
+              <span id="overview-progress-count" className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                {completedActivitiesCount} / 23
+              </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-balance">

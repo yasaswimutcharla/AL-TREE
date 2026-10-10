@@ -353,7 +353,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
       <div
         className={`p-5 sm:p-6 rounded-2xl border transition-all duration-200 ${
           isDarkMode
-            ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-xl shadow-violet-950/20'
+            ? 'bg-[#0a1020] border-blue-900/40 text-slate-100 shadow-xl shadow-blue-950/20'
             : 'bg-white border-slate-200/80 text-slate-900 shadow-[0_2px_8px_rgba(0,0,0,0.02)]'
         }`}
       >
@@ -368,7 +368,13 @@ export const QuizView: React.FC<QuizViewProps> = ({
             >
               <HelpCircle className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </div>
-            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <h1
+              id="quiz-header-title"
+              style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}
+              className={`text-lg sm:text-xl font-black tracking-tight ${
+                isDarkMode ? 'text-white' : 'text-black'
+              }`}
+            >
               Tree Knowledge Check
             </h1>
           </div>
@@ -378,7 +384,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
             <div
               className={`px-3.5 py-1.5 rounded-xl border text-xs sm:text-[13px] font-mono font-semibold shrink-0 ${
                 isDarkMode
-                  ? 'bg-[#151c2e] border-violet-900/50 text-slate-300'
+                  ? 'bg-[#0e172a] border-blue-900/50 text-slate-300'
                   : 'bg-slate-100 border-slate-300 text-slate-800'
               }`}
             >
@@ -473,7 +479,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                 }
               } else {
                 btnStyle = isDarkMode
-                  ? 'bg-[#12192c] text-slate-400 border border-violet-950/70 hover:border-violet-700/60 hover:text-slate-200'
+                  ? 'bg-[#0f172a] text-slate-400 border border-blue-950/70 hover:border-blue-600/60 hover:text-slate-200'
                   : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 hover:text-slate-900 shadow-xs';
               }
 
@@ -503,7 +509,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
             <div
               className={`p-6 sm:p-8 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
                 isDarkMode
-                  ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-xl shadow-violet-950/20'
+                  ? 'bg-[#0a1020] border-blue-900/40 text-slate-100 shadow-xl shadow-blue-950/20'
                   : 'bg-white border-slate-200/90 text-slate-900 shadow-md shadow-slate-200/60'
               }`}
             >
@@ -516,13 +522,6 @@ export const QuizView: React.FC<QuizViewProps> = ({
                       : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                   }`}>
                     ★ {currentTopicMeta?.difficulty === 'Intermediate' ? 'INTERMEDIATE LEVEL' : currentTopicMeta?.difficulty === 'Advanced' ? 'ADVANCED LEVEL' : 'BASIC LEVEL'}
-                  </span>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
-                    isDarkMode
-                      ? 'bg-slate-800 text-slate-300 border-slate-700'
-                      : 'bg-slate-100 text-slate-700 border-slate-200'
-                  }`}>
-                    QUESTION {currentQuestionIndex + 1} OF {totalQuestions}
                   </span>
                 </div>
 
@@ -586,12 +585,12 @@ export const QuizView: React.FC<QuizViewProps> = ({
                 {currentQ.options.map((opt, optIdx) => {
                   const isSelected = selectedAnswer === optIdx;
                   let optionStyle = isDarkMode
-                    ? 'bg-[#090d18] border-violet-950/70 text-slate-200 hover:border-violet-600/50'
+                    ? 'bg-[#091122] border-blue-950/70 text-slate-200 hover:border-blue-500/50'
                     : 'bg-white border-slate-200 text-slate-800 hover:border-blue-300 hover:bg-blue-50/40 shadow-xs';
 
                   if (isSelected && !isCurrentConfirmed) {
                     optionStyle = isDarkMode
-                      ? 'bg-violet-600/30 border-violet-500 text-white font-bold ring-1 ring-violet-500/40'
+                      ? 'bg-blue-600/25 border-blue-500 text-white font-bold ring-1 ring-blue-500/40'
                       : 'bg-blue-50 border-blue-500 text-blue-950 font-bold ring-1 ring-blue-500/40';
                   }
 
@@ -613,7 +612,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                     } else {
                       // All other options remain unrevealed
                       optionStyle = isDarkMode
-                        ? 'bg-[#090d18]/40 border-violet-950/40 text-slate-500 opacity-60'
+                        ? 'bg-[#091122]/40 border-blue-950/40 text-slate-500 opacity-60'
                         : 'bg-slate-50 border-slate-200 text-slate-500 opacity-60';
                     }
                   }
@@ -708,7 +707,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                     className={`flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all ${
                       currentQuestionIndex > 0
                         ? isDarkMode
-                          ? 'bg-[#141b2d] hover:bg-[#1c2740] text-slate-200 border border-violet-900/40 cursor-pointer'
+                          ? 'bg-[#141b2d] hover:bg-[#1c2740] text-slate-200 border border-blue-900/40 cursor-pointer'
                           : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 shadow-xs cursor-pointer'
                         : 'opacity-0 pointer-events-none'
                     }`}
@@ -728,10 +727,10 @@ export const QuizView: React.FC<QuizViewProps> = ({
                       className={`flex items-center gap-2 px-6 sm:px-7 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all shadow-md ${
                         selectedAnswer !== undefined
                           ? isDarkMode
-                            ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-violet-900/40 ring-1 ring-violet-400/50 cursor-pointer hover:scale-[1.02]'
+                            ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-900/40 ring-1 ring-blue-400/50 cursor-pointer hover:scale-[1.02]'
                             : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/30 cursor-pointer hover:scale-[1.02]'
                           : isDarkMode
-                          ? 'bg-[#141b2d]/60 text-slate-500 border border-violet-950/40 cursor-not-allowed opacity-60'
+                          ? 'bg-[#141b2d]/60 text-slate-500 border border-blue-950/40 cursor-not-allowed opacity-60'
                           : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-60'
                       }`}
                     >
@@ -743,7 +742,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                       onClick={handleNext}
                       className={`flex items-center gap-2 px-6 sm:px-7 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all shadow-md cursor-pointer hover:scale-[1.02] ${
                         isDarkMode
-                          ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-violet-900/40 ring-1 ring-violet-400/50'
+                          ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-900/40 ring-1 ring-blue-400/50'
                           : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/30'
                       }`}
                     >
@@ -768,7 +767,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
           <div
             className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 ${
               isDarkMode
-                ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-xl shadow-violet-950/20'
+                ? 'bg-[#0a1020] border-blue-900/40 text-slate-100 shadow-xl shadow-blue-950/20'
                 : 'bg-white border-slate-200/90 text-slate-900 shadow-md shadow-slate-200/60'
             }`}
           >
@@ -777,8 +776,8 @@ export const QuizView: React.FC<QuizViewProps> = ({
                 <div
                   className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border ${
                     isDarkMode
-                      ? 'bg-indigo-950/60 border-indigo-700/60 text-indigo-400'
-                      : 'bg-indigo-50 border-indigo-200 text-indigo-600'
+                      ? 'bg-blue-950/60 border-blue-700/60 text-blue-400'
+                      : 'bg-blue-50 border-blue-200 text-blue-600'
                   }`}
                 >
                   <Award className="w-6 h-6" />
@@ -798,7 +797,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                   <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                     Total Score
                   </div>
-                  <div className="text-xl sm:text-2xl font-black text-indigo-600 dark:text-indigo-400">
+                  <div className="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400">
                     {totalEarnedPoints} / {MAX_QUIZ_POINTS} pts
                   </div>
                 </div>
@@ -807,7 +806,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                   onClick={handleRetakeQuiz}
                   className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
                     isDarkMode
-                      ? 'bg-[#151c2e] hover:bg-[#1e2842] text-slate-200 border-violet-900/50'
+                      ? 'bg-[#0e172a] hover:bg-[#162238] text-slate-200 border-blue-900/50'
                       : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200'
                   }`}
                   title="Retake Quiz"
@@ -865,7 +864,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
           <div className="space-y-4">
             <div className="flex items-center justify-between px-1">
               <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-indigo-500" />
+                <BookOpen className="w-4 h-4 text-blue-500" />
                 <span>Question-by-Question Review</span>
               </h3>
               <span className="text-xs text-slate-500 dark:text-slate-400">
@@ -892,7 +891,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                   key={q.id}
                   className={`p-5 sm:p-6 rounded-2xl border transition-all duration-200 ${
                     isDarkMode
-                      ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-md'
+                      ? 'bg-[#0a1020] border-blue-900/40 text-slate-100 shadow-md'
                       : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
                   }`}
                 >
@@ -908,8 +907,8 @@ export const QuizView: React.FC<QuizViewProps> = ({
                       </span>
                       <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold uppercase tracking-wider border ${
                         isDarkMode
-                          ? 'bg-violet-950/40 text-violet-300 border-violet-800/50'
-                          : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                          ? 'bg-blue-950/40 text-blue-300 border-blue-800/50'
+                          : 'bg-blue-50 text-blue-700 border-blue-200'
                       }`}>
                         {q.id.toUpperCase()}
                       </span>
@@ -1095,12 +1094,12 @@ export const QuizView: React.FC<QuizViewProps> = ({
                   <div
                     className={`p-4 sm:p-4.5 rounded-xl border text-xs sm:text-sm leading-relaxed ${
                       isDarkMode
-                        ? 'bg-indigo-950/25 border-indigo-900/50 text-indigo-100'
-                        : 'bg-indigo-50/75 border-indigo-200 text-indigo-950'
+                        ? 'bg-blue-950/25 border-blue-900/50 text-blue-100'
+                        : 'bg-blue-50/75 border-blue-200 text-blue-950'
                     }`}
                   >
-                    <div className="flex items-center gap-2 mb-1.5 font-bold uppercase tracking-wider text-xs text-indigo-600 dark:text-indigo-400">
-                      <BookOpen className="w-4 h-4 text-indigo-500 shrink-0" />
+                    <div className="flex items-center gap-2 mb-1.5 font-bold uppercase tracking-wider text-xs text-blue-600 dark:text-blue-400">
+                      <BookOpen className="w-4 h-4 text-blue-500 shrink-0" />
                       <span>Why this is correct</span>
                     </div>
                     <p className="leading-relaxed pl-6 text-xs sm:text-[13px] opacity-95">
@@ -1118,8 +1117,8 @@ export const QuizView: React.FC<QuizViewProps> = ({
               onClick={handleRetakeQuiz}
               className={`flex items-center gap-2 px-7 py-3 rounded-2xl text-sm font-bold transition-all shadow-md cursor-pointer hover:scale-[1.02] ${
                 isDarkMode
-                  ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-violet-900/40 ring-1 ring-violet-400/50'
-                  : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-300/60'
+                  ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-900/40 ring-1 ring-blue-400/50'
+                  : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-300/60'
               }`}
             >
               <RotateCcw className="w-4 h-4" />

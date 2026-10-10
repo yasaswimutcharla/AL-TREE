@@ -41,6 +41,7 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
   isDarkMode,
   userId,
   isVideoCompleted = false,
+  completedVisualizations = [],
 }) => {
   const effectiveUserId = userId || getActiveUserId();
 
@@ -203,7 +204,7 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
         {/* Header of Score Card with Total Points Pill */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/25 text-white">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-[#0066FF] to-[#2563EB] flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/25 text-white">
               <Award className="w-6 h-6 stroke-[2.2]" />
             </div>
             <div>
@@ -259,8 +260,8 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
           <div
             className={`p-5 sm:p-6 rounded-2xl border flex flex-col justify-between transition-all ${
               isDarkMode
-                ? 'bg-[#090e1c] border-slate-800/80 hover:border-slate-700/90'
-                : 'bg-slate-50/80 border-slate-200/90 hover:border-slate-300'
+                ? 'bg-[#090e1c] border-slate-800/80 hover:border-blue-900/50'
+                : 'bg-slate-50/80 border-slate-200/90 hover:border-blue-300'
             }`}
           >
             <div>
@@ -268,8 +269,8 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
                 <div
                   className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 border ${
                     isDarkMode
-                      ? 'bg-purple-600/20 border-purple-500/30 text-purple-400'
-                      : 'bg-purple-100 border-purple-200 text-purple-700'
+                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-400'
+                      : 'bg-blue-100 border-blue-200 text-blue-700'
                   }`}
                 >
                   <Video className="w-5 h-5" />
@@ -295,7 +296,7 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
                 </div>
               </div>
 
-              {/* Progress bar + percentage */}
+              {/* Progress bar + 0/23 (not in percentage) */}
               <div className="flex items-center gap-3 mt-5">
                 <div
                   className={`flex-1 h-2 rounded-full overflow-hidden ${
@@ -303,16 +304,17 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
                   }`}
                 >
                   <div
-                    className="h-full rounded-full bg-purple-500 transition-all duration-500"
-                    style={{ width: `${vizPercent}%` }}
+                    className="h-full rounded-full bg-blue-600 transition-all duration-500"
+                    style={{ width: `${isVideoCompleted ? 100 : 0}%` }}
                   />
                 </div>
                 <span
+                  id="progress-visualize-count"
                   className={`text-xs font-bold font-mono shrink-0 ${
-                    isDarkMode ? 'text-slate-400' : 'text-slate-600'
+                    isDarkMode ? 'text-blue-400 font-extrabold' : 'text-blue-700 font-extrabold'
                   }`}
                 >
-                  {vizPercent}%
+                  {isVideoCompleted ? '1 / 1' : '0 / 1'}
                 </span>
               </div>
 
@@ -323,8 +325,8 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
                 }`}
               >
                 {isVideoCompleted
-                  ? 'Masterclass visualization video completed (+30 pts)'
-                  : '1 interactive masterclass visualization video (+30 pts)'}
+                  ? 'Masterclass visualization completed (1 / 1, +30 pts)'
+                  : 'Tree DSA masterclass visualization (0 / 1, +30 pts)'}
               </p>
             </div>
 
@@ -332,94 +334,8 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
               onClick={() => onNavigate('visualize')}
               className={`mt-5 w-full py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
                 isDarkMode
-                  ? 'bg-[#12182b] hover:bg-[#1a233e] border-purple-900/40 text-purple-300 hover:text-white'
-                  : 'bg-white hover:bg-slate-100 border-slate-200 text-purple-700 shadow-xs'
-              }`}
-            >
-              <span>{isVideoCompleted ? 'Rewatch Visualization' : 'Watch Visualization'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Category Card 2: Quiz (70 pts max) */}
-          <div
-            className={`p-5 sm:p-6 rounded-2xl border flex flex-col justify-between transition-all ${
-              isDarkMode
-                ? 'bg-[#090e1c] border-slate-800/80 hover:border-slate-700/90'
-                : 'bg-slate-50/80 border-slate-200/90 hover:border-slate-300'
-            }`}
-          >
-            <div>
-              <div className="flex items-center gap-3.5">
-                <div
-                  className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 border ${
-                    isDarkMode
-                      ? 'bg-purple-600/20 border-purple-500/30 text-purple-400'
-                      : 'bg-purple-100 border-purple-200 text-purple-700'
-                  }`}
-                >
-                  <Video className="w-5 h-5" />
-                </div>
-                <div>
-                  <div
-                    className={`text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? 'text-slate-400' : 'text-slate-500'
-                    }`}
-                  >
-                    Visualization
-                  </div>
-                  <div className="text-xl sm:text-2xl font-black font-mono mt-0.5">
-                    <span>{totalVizPointsEarned}</span>{' '}
-                    <span
-                      className={`text-sm font-semibold ${
-                        isDarkMode ? 'text-slate-400' : 'text-slate-500'
-                      }`}
-                    >
-                      / 30 pts
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Progress bar + percentage */}
-              <div className="flex items-center gap-3 mt-5">
-                <div
-                  className={`flex-1 h-2 rounded-full overflow-hidden ${
-                    isDarkMode ? 'bg-slate-800' : 'bg-slate-200'
-                  }`}
-                >
-                  <div
-                    className="h-full rounded-full bg-purple-500 transition-all duration-500"
-                    style={{ width: `${vizPercent}%` }}
-                  />
-                </div>
-                <span
-                  className={`text-xs font-bold font-mono shrink-0 ${
-                    isDarkMode ? 'text-slate-400' : 'text-slate-600'
-                  }`}
-                >
-                  {vizPercent}%
-                </span>
-              </div>
-
-              {/* Activity description */}
-              <p
-                className={`text-xs mt-3.5 font-medium ${
-                  isDarkMode ? 'text-slate-400' : 'text-slate-600'
-                }`}
-              >
-                {isVideoCompleted
-                  ? 'Masterclass visualization video completed (+30 pts)'
-                  : '1 interactive masterclass visualization video (+30 pts)'}
-              </p>
-            </div>
-
-            <button
-              onClick={() => onNavigate('visualize')}
-              className={`mt-5 w-full py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
-                isDarkMode
-                  ? 'bg-[#12182b] hover:bg-[#1a233e] border-purple-900/40 text-purple-300 hover:text-white'
-                  : 'bg-white hover:bg-slate-100 border-slate-200 text-purple-700 shadow-xs'
+                  ? 'bg-[#0e172a] hover:bg-[#162238] border-blue-900/40 text-blue-300 hover:text-white'
+                  : 'bg-white hover:bg-slate-100 border-slate-200 text-blue-700 shadow-xs'
               }`}
             >
               <span>{isVideoCompleted ? 'Rewatch Visualization' : 'Watch Visualization'}</span>

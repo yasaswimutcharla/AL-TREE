@@ -497,6 +497,12 @@ export default function App() {
             <HomeView
               onNavigate={handleNavigate}
               isDarkMode={isDarkMode}
+              completedActivitiesCount={Math.min(
+                23,
+                Math.min(completedTopics.length, 7) +
+                  (isVideoCompleted ? 1 : 0) +
+                  (quizProgress ? Math.min(quizProgress.completed, 14) : 0)
+              )}
             />
           )}
 
