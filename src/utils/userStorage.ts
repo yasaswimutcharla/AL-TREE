@@ -23,7 +23,7 @@ export const createDefaultUserData = (userId: string, displayName?: string, avat
     completedTopics: [],
     completedVisualizations: [],
     quizScore: null,
-    quizProgress: { completed: 0, total: 10 },
+    quizProgress: { completed: 0, total: 14 },
     quizState: null,
     gameScore: 0,
     gameXP: 0,
@@ -274,7 +274,7 @@ export const syncUserDataToServer = async (userData: UserData): Promise<void> =>
     } else {
       removeUserItem(uid, 'quiz_score');
     }
-    setUserItem(uid, 'quiz_progress', JSON.stringify(userData.quizProgress || { completed: 0, total: 10 }));
+    setUserItem(uid, 'quiz_progress', JSON.stringify(userData.quizProgress || { completed: 0, total: 14 }));
     setUserItem(uid, 'video_completed', String(Boolean(userData.videoCompleted)));
     setUserItem(uid, 'completed_visualizations', JSON.stringify(userData.completedVisualizations || []));
 

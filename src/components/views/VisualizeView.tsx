@@ -13,7 +13,10 @@ import {
   Scan,
   Menu,
   Rewind,
-  AlertCircle
+  Sparkles,
+  Clock,
+  X,
+  ChevronLeft
 } from 'lucide-react';
 
 interface VisualizeViewProps {
@@ -28,12 +31,17 @@ interface VisualizeViewProps {
 
 const PUBLIC_LESSON_VIDEO_URL = '/videos/lesson.mp4';
 
-const CHAPTERS = [
-  { time: 0, title: 'Basics & Root' },
-  { time: 9.5, title: 'Terminology' },
-  { time: 20, title: 'Leaf & Degree' },
-  { time: 31, title: '3 Tree Types' },
-  { time: 44.5, title: '5 Binary Tree Types' },
+// Exactly 9 Trees subtopics specified in the requirements
+const TREES_SUBTOPICS = [
+  'Introduction to Trees',
+  'Tree Terminology',
+  'Types of Trees',
+  'Binary Trees',
+  'Binary Search Trees (BST)',
+  'Tree Traversals',
+  'Tree Insertion',
+  'Tree Deletion',
+  'Applications of Trees',
 ];
 
 export const VisualizeView: React.FC<VisualizeViewProps> = ({
@@ -51,6 +59,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const playerContainerRef = useRef<HTMLDivElement | null>(null);
 
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [videoLoadError, setVideoError] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -61,9 +70,10 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [fitMode, setFitMode] = useState<'cover' | 'contain'>('contain');
   const [showControls, setShowControls] = useState<boolean>(true);
+  const [completionBannerShown, setCompletionBannerShown] = useState<boolean>(false);
   const hideControlsTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Clear any legacy saved playback time so video always plays cleanly
+  // Clear legacy saved playback time so video always starts cleanly
   useEffect(() => {
     try {
       removeUserItem(effectiveUserId, 'video_last_time');
@@ -81,7 +91,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
       );
       setIsFullscreen(isDocFull);
       if (!isDocFull) {
-        document.body.style.overflow = '';
+        document.body.style.overflow = isVideoModalOpen ? 'hidden' : '';
       }
     };
 
@@ -96,7 +106,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
       document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
       document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
     };
-  }, []);
+  }, [isVideoModalOpen]);
 
   // Format seconds to mm:ss
   const formatTime = (seconds: number): string => {
@@ -118,7 +128,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
     }
   };
 
-  // Seek handler - backward navigation only
+  // Seek handler - backward navigation only (prevents skipping forward)
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = parseFloat(e.target.value);
     if (newTime <= currentTime) {
@@ -129,7 +139,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
     }
   };
 
-  // Skip backward only
+  // Skip backward only (-5s)
   const skip = (seconds: number) => {
     if (!videoRef.current || seconds >= 0) return;
     const target = Math.max(0, videoRef.current.currentTime + seconds);
@@ -173,43 +183,22 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
     }
   };
 
-  // Jump to specific chapter topic - backward only
-  const seekToChapter = (timeInSec: number) => {
-    if (timeInSec > currentTime) return; // Do not skip forward
-    if (videoRef.current) {
-      videoRef.current.currentTime = timeInSec;
-      setCurrentTime(timeInSec);
-      if (videoRef.current.paused) {
-        videoRef.current.play().catch(() => {});
-        setIsPlaying(true);
-      }
-    }
-  };
-
   // Toggle fit mode between 100% cover and contain
   const toggleFitMode = () => {
     setFitMode((prev) => (prev === 'cover' ? 'contain' : 'cover'));
   };
 
-  // Cross-browser Fullscreen toggle (Container + Video native + Viewport fallback)
+  // Cross-browser Fullscreen toggle
   const toggleFullscreen = () => {
     const elem = playerContainerRef.current as any;
     const vid = videoRef.current as any;
 
     if (!isFullscreen) {
       setIsFullscreen(true);
-      document.body.style.overflow = 'hidden';
-
       if (elem) {
         if (elem.requestFullscreen) {
           elem.requestFullscreen().catch(() => {
-            if (vid) {
-              if (vid.requestFullscreen) {
-                vid.requestFullscreen().catch(() => {});
-              } else if (vid.webkitEnterFullscreen) {
-                vid.webkitEnterFullscreen();
-              }
-            }
+            if (vid?.requestFullscreen) vid.requestFullscreen().catch(() => {});
           });
           return;
         } else if (elem.webkitRequestFullscreen) {
@@ -219,20 +208,11 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
           } catch {}
         }
       }
-
-      if (vid) {
-        if (vid.requestFullscreen) {
-          vid.requestFullscreen().catch(() => {});
-        } else if (vid.webkitEnterFullscreen) {
-          vid.webkitEnterFullscreen();
-        } else if (vid.webkitRequestFullscreen) {
-          vid.webkitRequestFullscreen();
-        }
+      if (vid?.requestFullscreen) {
+        vid.requestFullscreen().catch(() => {});
       }
     } else {
       setIsFullscreen(false);
-      document.body.style.overflow = '';
-
       if (
         document.fullscreenElement ||
         (document as any).webkitFullscreenElement ||
@@ -275,331 +255,496 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
     } else if (e.key === 'f' || e.key === 'F') {
       e.preventDefault();
       toggleFullscreen();
-    } else if (e.key === 'Escape' && isFullscreen) {
-      e.preventDefault();
-      toggleFullscreen();
+    } else if (e.key === 'Escape') {
+      if (isFullscreen) {
+        e.preventDefault();
+        toggleFullscreen();
+      } else if (isVideoModalOpen) {
+        e.preventDefault();
+        handleCloseVideoModal();
+      }
+    }
+  };
+
+  // Open modal and play video
+  const handleOpenVideoModal = () => {
+    setIsVideoModalOpen(true);
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {});
+        setIsPlaying(true);
+      }
+    }, 150);
+  };
+
+  // Close modal and pause video
+  const handleCloseVideoModal = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+    setIsPlaying(false);
+    setIsVideoModalOpen(false);
+    document.body.style.overflow = '';
+  };
+
+  // Award 30 points upon complete video playback (awarded strictly once)
+  const handleVideoEnded = () => {
+    setIsPlaying(false);
+    if (!isVideoCompleted && onToggleVideoCompleted) {
+      onToggleVideoCompleted();
+      setCompletionBannerShown(true);
     }
   };
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div
-      tabIndex={0}
-      ref={playerContainerRef}
-      onKeyDown={handleKeyDown}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => isPlaying && setShowControls(false)}
-      style={
-        isFullscreen
-          ? {
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              width: '100vw',
-              height: '100vh',
-              zIndex: 99999,
-              margin: 0,
-              padding: 0,
-            }
-          : undefined
-      }
-      className={`relative w-full h-full flex-1 flex flex-col justify-between bg-black overflow-hidden select-none outline-none ${
-        isFullscreen ? 'fixed inset-0 z-[99999] w-screen h-screen' : 'min-h-screen h-full'
-      }`}
-    >
-      {/* 100% Screen Video Canvas */}
-      <video
-        ref={videoRef}
-        src={activeVideoUrl}
-        poster="/videos/poster.jpg"
-        controls={false}
-        playsInline
-        preload="metadata"
-        onClick={togglePlay}
-        onDoubleClick={toggleFullscreen}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onTimeUpdate={() => {
-          if (videoRef.current) {
-            setCurrentTime(videoRef.current.currentTime);
-          }
-        }}
-        onLoadedMetadata={() => {
-          if (videoRef.current) {
-            setDuration(videoRef.current.duration);
-          }
-        }}
-        onEnded={() => {
-          setIsPlaying(false);
-          if (onToggleVideoCompleted && !isVideoCompleted) {
-            onToggleVideoCompleted();
-          }
-        }}
-        onError={() => {
-          setVideoError(true);
-          setIsPlaying(false);
-        }}
-        className={`absolute inset-0 w-full h-full transition-all duration-300 ${
-          fitMode === 'cover' ? 'object-cover' : 'object-contain'
-        } cursor-pointer`}
-      >
-        <source src={activeVideoUrl} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
-      {/* Top Floating Overlay Bar - Topic names at the top */}
-      <div
-        className={`relative z-40 px-4 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-b from-black/95 via-black/60 to-transparent flex items-center justify-between gap-3 sm:gap-4 transition-opacity duration-300 ${
-          showControls || !isPlaying ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 shrink-0">
+    <div className="w-full min-h-screen py-6 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-6">
+      {/* 1. VISUALIZE PAGE HEADING & DESCRIPTION */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+        <div className="flex items-center gap-3.5">
           {!isSidebarOpen && onToggleSidebar && (
             <button
-              id="header-hamburger-btn"
+              id="visualize-sidebar-toggle-btn"
               onClick={onToggleSidebar}
-              title="Open Navigation Menu (☰)"
-              className="p-2 rounded-xl bg-black/60 hover:bg-black/85 text-slate-300 hover:text-white border border-white/20 transition-all cursor-pointer shrink-0"
+              title="Open Navigation Menu"
+              className={`p-2 rounded-xl border transition-all cursor-pointer shrink-0 ${
+                isDarkMode
+                  ? 'bg-zinc-900 border-zinc-800 text-slate-300 hover:text-white'
+                  : 'bg-white border-slate-200 text-slate-700 hover:text-black'
+              }`}
             >
-              <Menu className="w-4 h-4" />
+              <Menu className="w-5 h-5" />
             </button>
           )}
-          <div className="w-8 h-8 rounded-xl bg-violet-600/30 border border-violet-500/40 flex items-center justify-center text-violet-300 shrink-0">
-            <VideoIcon className="w-4 h-4" />
-          </div>
-          <div className="min-w-0 hidden md:block">
-            <div className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-violet-400">
-              VISUAL LESSON
-            </div>
-            <h1 className="text-sm sm:text-base font-extrabold text-white tracking-tight truncate">
-              Tree Data Structures & BST
-            </h1>
-          </div>
-        </div>
 
-        {/* Topic Chapters / Navigation (backward navigation only) */}
-        <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full no-scrollbar">
-          {CHAPTERS.map((ch, idx) => {
-            const nextCh = CHAPTERS[idx + 1];
-            const isActive = currentTime >= ch.time && (!nextCh || currentTime < nextCh.time);
-            const isClickable = ch.time <= currentTime;
-            return (
-              <button
-                key={ch.title}
-                disabled={!isClickable}
-                onClick={() => isClickable && seekToChapter(ch.time)}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border backdrop-blur-md ${
-                  isActive
-                    ? 'bg-violet-600 text-white border-violet-400 shadow-md shadow-violet-950/60'
-                    : isClickable
-                    ? 'bg-black/50 hover:bg-black/80 text-slate-300 border-white/15 cursor-pointer'
-                    : 'bg-black/30 text-slate-600 border-white/5 opacity-50 cursor-not-allowed'
-                }`}
-                title={isClickable ? `Rewind to ${ch.title}` : `Watch up to ${ch.title} to unlock`}
-              >
-                {ch.title}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Action Controls */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Completion Status Badge */}
           <div
-            id="visualize-points-badge"
-            className={`flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl border backdrop-blur-md shadow-md ${
-              isVideoCompleted
-                ? 'bg-emerald-600/90 text-white border-emerald-400/60'
-                : 'bg-black/60 text-slate-300 border-white/20'
+            className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center border shrink-0 ${
+              isDarkMode
+                ? 'bg-violet-950/60 border-violet-800/40 text-violet-400'
+                : 'bg-violet-50 border-violet-200 text-violet-600'
             }`}
-            title={isVideoCompleted ? 'Lesson 100% completed (350 points awarded)' : 'Watch entire video to earn 350 points (50 pts / topic)'}
           >
-            <CheckCircle2 className={`w-3.5 h-3.5 ${isVideoCompleted ? 'text-white' : 'text-slate-400'}`} />
-            <span className="hidden sm:inline">
-              {isVideoCompleted ? 'Completed · 350 / 350 pts' : 'In Progress · 0 / 350 pts'}
-            </span>
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
 
-          {/* 100% Screen Fill Toggle */}
-          <button
-            onClick={toggleFitMode}
-            className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 border backdrop-blur-md transition-all cursor-pointer shadow-md ${
-              fitMode === 'cover'
-                ? 'bg-violet-600/80 text-white border-violet-400/60'
-                : 'bg-black/60 hover:bg-black/85 text-slate-300 border-white/20'
-            }`}
-            title={fitMode === 'cover' ? 'Fill Screen (100% Cover)' : 'Fit Frame (Contain)'}
-          >
-            <Scan className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">{fitMode === 'cover' ? '100% Fill' : 'Fit Frame'}</span>
-          </button>
+          <div>
+            <h1
+              className={`text-2xl sm:text-3xl font-black tracking-tight uppercase ${
+                isDarkMode ? 'text-white' : 'text-slate-900'
+              }`}
+            >
+              VISUALIZE
+            </h1>
+            <p
+              className={`text-xs sm:text-sm mt-0.5 font-medium ${
+                isDarkMode ? 'text-slate-400' : 'text-slate-600'
+              }`}
+            >
+              Watch the Trees lesson video completely to master tree concepts.
+            </p>
+          </div>
+        </div>
 
-          {/* Full Screen Button */}
-          <button
-            id="btn-visualize-fullscreen"
-            onClick={toggleFullscreen}
-            className="px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 bg-black/60 hover:bg-black/85 text-white border border-white/20 backdrop-blur-md transition-all cursor-pointer shadow-md"
-            title={isFullscreen ? 'Exit Full Screen (Esc or F)' : 'Enter 100% Full Screen (F)'}
+        {/* Yellowish-orange points summary badge */}
+        <div className="shrink-0 self-start sm:self-center">
+          <span
+            id="visualize-topic-points-indicator"
+            className={`text-xs font-mono font-bold px-3.5 py-1.5 rounded-xl border flex items-center gap-1.5 shadow-xs ${
+              isDarkMode
+                ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
+                : 'bg-amber-50 border-amber-300 text-amber-800'
+            }`}
+            title="Visualize Topic Points"
           >
-            {isFullscreen ? (
-              <>
-                <Minimize className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Exit Full Screen</span>
-              </>
-            ) : (
-              <>
-                <Maximize className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Full Screen</span>
-              </>
-            )}
-          </button>
+            <span className={isDarkMode ? 'text-amber-300' : 'text-amber-800'}>Topic Points:</span>
+            <span className={isDarkMode ? 'text-amber-400 font-extrabold' : 'text-amber-700 font-extrabold'}>
+              {isVideoCompleted ? '30 / 30 pts' : '0 / 30 pts'}
+            </span>
+          </span>
         </div>
       </div>
 
-      {/* Center Start / Play Indicator */}
-      {!isPlaying && !videoLoadError && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px] z-30 space-y-3 p-4">
-          <button
-            id="btn-visualize-start"
-            onClick={togglePlay}
-            className="px-7 py-3.5 sm:px-9 sm:py-4 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white flex items-center gap-3 shadow-2xl shadow-violet-950/80 transition-all transform hover:scale-105 cursor-pointer font-extrabold text-sm sm:text-base border border-violet-400/40"
-            title="Start Visual Lesson Video"
-          >
-            <Play className="w-6 h-6 fill-current" />
-            <span>{currentTime > 0 ? 'Resume Visual Lesson' : 'Start Visual Lesson'}</span>
-          </button>
-          <p className="text-xs text-slate-200/90 font-medium px-4 py-1.5 rounded-full bg-black/70 border border-white/10 text-center max-w-md">
-            {isVideoCompleted
-              ? '🎉 Lesson video fully completed · 350 / 350 points earned!'
-              : 'Students must watch the entire video after clicking Start to award points (50 pts per topic, 350 pts total).'}
-          </p>
-        </div>
-      )}
-
-      {/* Error Overlay */}
-      {videoLoadError && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/90 p-6 text-center">
-          <div className="w-12 h-12 rounded-full bg-rose-950/80 border border-rose-800 text-rose-400 flex items-center justify-center mb-3">
-            <AlertCircle className="w-6 h-6" />
-          </div>
-          <p className="text-sm font-semibold text-white mb-1">Visual Lesson Stream</p>
-          <p className="text-xs text-slate-400 max-w-sm mb-4">
-            Video stream is loading. Please wait or check your connection.
-          </p>
-        </div>
-      )}
-
-      {/* Bottom Floating Control Bar Overlay */}
+      {/* 2. SINGLE VIDEO CARD (EXACTLY ONE VIDEO CARD FOR THIS TOPIC) */}
       <div
-        className={`relative z-40 px-5 sm:px-8 py-4 sm:py-5 bg-gradient-to-t from-black/95 via-black/80 to-transparent transition-opacity duration-300 ${
-          showControls || !isPlaying ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        id="visualize-single-video-card"
+        className={`p-6 sm:p-8 rounded-3xl border transition-all duration-200 shadow-xl ${
+          isDarkMode
+            ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-violet-950/20'
+            : 'bg-white border-slate-200/90 text-slate-900 shadow-slate-200/70'
         }`}
       >
-        {/* Seek Bar / Progress Slider (Backward navigation only) */}
-        <div className="relative group flex items-center w-full mb-3.5">
-          <div className="relative w-full h-1.5 sm:h-2 group-hover:h-2.5 bg-slate-700/80 rounded-full overflow-hidden transition-all">
-            <div
-              className="h-full bg-violet-500 transition-all rounded-full"
-              style={{ width: `${progressPercentage}%` }}
-            />
+        {/* Card Header Row: Topic, Lesson 01 */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <span
+              className={`text-[11px] sm:text-xs font-bold font-mono uppercase tracking-wider px-3 py-1 rounded-full border ${
+                isDarkMode
+                  ? 'bg-violet-950/60 border-violet-800/50 text-violet-300'
+                  : 'bg-violet-50 border-violet-200 text-violet-700'
+              }`}
+            >
+              TREES — NON-LINEAR DATA STRUCTURE
+            </span>
+
+            <span
+              className={`text-[11px] sm:text-xs font-bold font-mono uppercase tracking-wider px-2.5 py-1 rounded-full border ${
+                isDarkMode
+                  ? 'bg-zinc-900 border-zinc-800 text-slate-300'
+                  : 'bg-slate-100 border-slate-200 text-slate-700'
+              }`}
+            >
+              LESSON 01
+            </span>
           </div>
-          <input
-            type="range"
-            min={0}
-            max={Math.max(0.1, currentTime)}
-            step={0.1}
-            value={currentTime}
-            onChange={handleSeek}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            title="Rewind / backward navigation only"
-          />
         </div>
 
-        {/* Bottom Controls Row */}
-        <div className="flex items-center justify-between gap-3 text-white">
-          {/* Left Controls: Play/Pause, Rewind, Time Display */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              onClick={togglePlay}
-              className="p-2 rounded-xl hover:bg-white/15 transition-colors cursor-pointer text-white"
-              title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
-            >
-              {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current" />}
-            </button>
+        {/* Title and Short Description */}
+        <div className="space-y-2 mb-5">
+          <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight">
+            Trees — Non-Linear Data Structure
+          </h2>
+          <p
+            className={`text-xs sm:text-sm leading-relaxed ${
+              isDarkMode ? 'text-slate-300' : 'text-slate-600'
+            }`}
+          >
+            A complete comprehensive visual guide to hierarchical non-linear tree data structures, node properties, binary trees, binary search trees (BST), and algorithmic operations.
+          </p>
+        </div>
 
-            {/* Rewind only - forward button removed */}
-            <button
-              onClick={() => skip(-10)}
-              className="p-1.5 rounded-xl hover:bg-white/15 transition-colors cursor-pointer text-slate-300 hover:text-white flex items-center gap-1 text-xs"
-              title="Rewind 10 seconds (Left Arrow)"
-            >
-              <Rewind className="w-4 h-4" />
-              <span className="text-[10px] hidden sm:inline">-10s</span>
-            </button>
+        {/* Status Row */}
+        <div
+          className={`p-4 rounded-2xl border mb-6 flex flex-wrap items-center justify-between gap-3 ${
+            isDarkMode
+              ? 'bg-[#090d18] border-violet-950/70'
+              : 'bg-slate-50 border-slate-200/80'
+          }`}
+        >
+          {/* Status */}
+          <div className="flex items-center gap-2.5">
+            <span className={`text-xs font-semibold ${isDarkMode ? 'opacity-75' : 'text-slate-700'}`}>Status:</span>
+            {isVideoCompleted ? (
+              <span
+                id="visualize-status-badge"
+                className={`inline-flex items-center gap-1.5 text-xs font-bold font-mono px-3 py-1 rounded-full border ${
+                  isDarkMode
+                    ? 'bg-emerald-950/60 border-emerald-500/50 text-emerald-400'
+                    : 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                }`}
+              >
+                <CheckCircle2 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`} />
+                Completed
+              </span>
+            ) : (
+              <span
+                id="visualize-status-badge"
+                className={`inline-flex items-center gap-1.5 text-xs font-bold font-mono px-3 py-1 rounded-full border ${
+                  isDarkMode
+                    ? 'bg-slate-800/80 border-slate-700 text-slate-300'
+                    : 'bg-slate-100 border-slate-300 text-slate-700'
+                }`}
+              >
+                <Clock className={`w-3.5 h-3.5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
+                Incomplete
+              </span>
+            )}
+          </div>
+        </div>
 
-            {/* Time Display */}
-            <div className="text-xs font-mono font-medium text-slate-200 tracking-tight ml-1">
-              <span>{formatTime(currentTime)}</span>
-              <span className="opacity-50 mx-1">/</span>
-              <span className="opacity-70">{formatTime(duration)}</span>
+        {/* Subtopics Section: 9 small, neat labels neatly arranged below description */}
+        <div className="mb-6 space-y-2.5">
+          <div className={`text-[11px] font-bold tracking-wider uppercase ${isDarkMode ? 'opacity-75' : 'text-slate-700'}`}>
+            SUBTOPICS COVERED:
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {TREES_SUBTOPICS.map((subtopic) => (
+              <span
+                key={subtopic}
+                className={`px-3 py-1 rounded-xl text-xs font-medium border transition-colors ${
+                  isDarkMode
+                    ? 'bg-[#121829] border-violet-950/80 text-slate-300 hover:border-violet-700/60'
+                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-blue-50/50'
+                }`}
+              >
+                {subtopic}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Video Card Preview & Prominent Action Button */}
+        <div className="space-y-4 pt-2">
+          {/* Video Preview Canvas with Play Button */}
+          <div
+            onClick={handleOpenVideoModal}
+            className="relative w-full aspect-video sm:aspect-[21/9] max-h-72 rounded-2xl overflow-hidden border border-violet-950/50 bg-black cursor-pointer group shadow-inner"
+          >
+            <img
+              src="/videos/poster.jpg"
+              alt="Tree DSA Masterclass Preview"
+              className="w-full h-full object-cover opacity-80 group-hover:opacity-95 group-hover:scale-102 transition-all duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-blue-600/90 hover:bg-blue-500 text-white flex items-center justify-center shadow-2xl drop-shadow-lg transition-transform group-hover:scale-110">
+                <Play className="w-7 h-7 fill-current ml-1" />
+              </div>
+            </div>
+
+            {/* Video overlay badge */}
+            <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white drop-shadow-md">
+              <span className="font-semibold px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-xs">
+                Tree DSA Complete Visual Lesson
+              </span>
             </div>
           </div>
 
-          {/* Right Controls: Volume, Speed, Fullscreen */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Volume Controls */}
-            <div className="flex items-center gap-1.5 group">
-              <button
-                onClick={toggleMute}
-                className="p-1.5 rounded-xl hover:bg-white/15 transition-colors cursor-pointer text-slate-200 hover:text-white"
-                title={isMuted ? 'Unmute (M)' : 'Mute (M)'}
-              >
-                {isMuted || volume === 0 ? (
-                  <VolumeX className="w-4 h-4" />
-                ) : volume < 0.5 ? (
-                  <Volume1 className="w-4 h-4" />
-                ) : (
-                  <Volume2 className="w-4 h-4" />
-                )}
-              </button>
+          {/* Prominent Blue Action Button */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 pt-1">
+            <button
+              id="btn-watch-trees-video"
+              onClick={handleOpenVideoModal}
+              className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-sm sm:text-base shadow-xl shadow-blue-600/30 flex items-center justify-center gap-2.5 transition-all transform hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+            >
+              <Play className="w-5 h-5 fill-current" />
+              <span>WATCH TREES VIDEO</span>
+            </button>
 
+            {isVideoCompleted && (
+              <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4" />
+                Lesson completed.
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* 3. VIDEO PLAYER MODAL / PLAYBACK EXPERIENCE */}
+      {isVideoModalOpen && (
+        <div
+          tabIndex={0}
+          ref={playerContainerRef}
+          onKeyDown={handleKeyDown}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => isPlaying && setShowControls(false)}
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col justify-between select-none outline-none overflow-hidden"
+        >
+          {/* Top Bar inside Modal */}
+          <div
+            className={`relative z-40 px-4 sm:px-8 py-3.5 bg-gradient-to-b from-black/95 via-black/70 to-transparent flex items-center justify-between gap-3 transition-opacity duration-300 ${
+              showControls || !isPlaying ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            {/* Back to Visualize Button */}
+            <button
+              id="btn-close-video-modal"
+              onClick={handleCloseVideoModal}
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/60 hover:bg-black/85 text-slate-200 hover:text-white border border-white/20 backdrop-blur-md transition-all cursor-pointer text-xs font-semibold shrink-0"
+              title="Return to Visualize Page (Esc)"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>Back to Visualize</span>
+            </button>
+
+            {/* Title & Lesson tag */}
+            <div className="min-w-0 text-center hidden md:block">
+              <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-violet-400">
+                TREES — NON-LINEAR DATA STRUCTURE · LESSON 01
+              </div>
+              <h2 className="text-sm font-extrabold text-white truncate">
+                Tree DSA Complete Visual Lesson
+              </h2>
+            </div>
+
+            {/* Status / Close Button */}
+            <div className="flex items-center gap-2 shrink-0">
+              {isVideoCompleted && (
+                <div
+                  className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border backdrop-blur-md shadow-md bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Completed</span>
+                </div>
+              )}
+
+              <button
+                onClick={handleCloseVideoModal}
+                className="p-2 rounded-xl bg-black/60 hover:bg-black/85 text-slate-300 hover:text-white border border-white/20 transition-all cursor-pointer"
+                title="Close Video"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Central Video Viewport */}
+          <div className="relative flex-1 flex items-center justify-center overflow-hidden bg-black">
+            <video
+              ref={videoRef}
+              src={activeVideoUrl}
+              poster="/videos/poster.jpg"
+              controls={false}
+              playsInline
+              preload="metadata"
+              onClick={togglePlay}
+              onDoubleClick={toggleFullscreen}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onTimeUpdate={() => {
+                if (videoRef.current) {
+                  setCurrentTime(videoRef.current.currentTime);
+                }
+              }}
+              onLoadedMetadata={() => {
+                if (videoRef.current) {
+                  setDuration(videoRef.current.duration);
+                }
+              }}
+              onEnded={handleVideoEnded}
+              onError={() => {
+                setVideoError(true);
+                setIsPlaying(false);
+              }}
+              className={`max-w-full max-h-full transition-all duration-300 ${
+                fitMode === 'cover' ? 'w-full h-full object-cover' : 'object-contain'
+              } cursor-pointer`}
+            >
+              <source src={activeVideoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+
+            {/* Play/Pause Overlay indicator when paused */}
+            {!isPlaying && !videoLoadError && (
+              <div
+                onClick={togglePlay}
+                className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] cursor-pointer"
+              >
+                <div className="w-20 h-20 rounded-full bg-blue-600/90 hover:bg-blue-500 text-white flex items-center justify-center shadow-2xl drop-shadow-xl transform hover:scale-105 transition-transform">
+                  <Play className="w-8 h-8 fill-current ml-1" />
+                </div>
+              </div>
+            )}
+
+            {/* Completion Banner */}
+            {completionBannerShown && (
+              <div className="absolute top-16 left-1/2 -translate-x-1/2 z-40 px-5 py-3 rounded-2xl bg-emerald-950/90 border border-emerald-500 text-emerald-200 text-xs sm:text-sm font-bold flex items-center gap-2 shadow-2xl backdrop-blur-md animate-bounce">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <span>🎉 Lesson Completed!</span>
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Custom Playback Controls Bar */}
+          <div
+            className={`relative z-40 px-4 sm:px-8 py-3.5 bg-gradient-to-t from-black/95 via-black/80 to-transparent transition-opacity duration-300 ${
+              showControls || !isPlaying ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            {/* Progress Scrub Bar (Backward seeking only; forward seek prohibited) */}
+            <div className="relative flex items-center gap-3 mb-2.5">
               <input
                 type="range"
                 min={0}
-                max={1}
-                step={0.05}
-                value={isMuted ? 0 : volume}
-                onChange={handleVolumeChange}
-                className="w-16 sm:w-20 h-1 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-violet-500"
-                title="Volume slider"
+                max={duration || 100}
+                step={0.1}
+                value={currentTime}
+                onChange={handleSeek}
+                className="w-full h-2 rounded-full appearance-none bg-slate-700/80 cursor-pointer accent-blue-500 hover:h-2.5 transition-all"
+                title="Scrub backward (forward seeking prohibited)"
               />
             </div>
 
-            {/* Playback Speed Toggle */}
-            <button
-              onClick={cyclePlaybackSpeed}
-              className="px-2 py-1 rounded-lg hover:bg-white/15 text-xs font-mono font-bold text-slate-200 hover:text-white transition-colors cursor-pointer"
-              title="Change playback speed"
-            >
-              {playbackSpeed}x
-            </button>
+            {/* Bottom Controls Row */}
+            <div className="flex items-center justify-between gap-3 text-white text-xs font-semibold">
+              <div className="flex items-center gap-3">
+                {/* Play/Pause Button */}
+                <button
+                  onClick={togglePlay}
+                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                  title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
+                >
+                  {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+                </button>
 
-            {/* Fullscreen Button */}
-            <button
-              id="btn-player-fullscreen-toggle"
-              onClick={toggleFullscreen}
-              className="p-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white transition-all cursor-pointer shadow-lg border border-violet-400/50 ml-1 shrink-0"
-              title={isFullscreen ? 'Exit Full Screen (F)' : 'Full Screen (F)'}
-            >
-              {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
-            </button>
+                {/* Rewind 5s Button */}
+                <button
+                  onClick={() => skip(-5)}
+                  className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer flex items-center gap-1"
+                  title="Rewind 5 seconds"
+                >
+                  <Rewind className="w-3.5 h-3.5" />
+                  <span>5s</span>
+                </button>
+
+                {/* Time Display */}
+                <div className="font-mono text-slate-300">
+                  <span>{formatTime(currentTime)}</span>
+                  <span className="opacity-50 mx-1">/</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
+              </div>
+
+              {/* Right Controls */}
+              <div className="flex items-center gap-2.5">
+                {/* Volume & Mute */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={toggleMute}
+                    className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                    title={isMuted ? 'Unmute' : 'Mute'}
+                  >
+                    {isMuted ? (
+                      <VolumeX className="w-4 h-4" />
+                    ) : volume < 0.5 ? (
+                      <Volume1 className="w-4 h-4" />
+                    ) : (
+                      <Volume2 className="w-4 h-4" />
+                    )}
+                  </button>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    value={isMuted ? 0 : volume}
+                    onChange={handleVolumeChange}
+                    className="w-16 h-1.5 rounded-full appearance-none bg-slate-700 cursor-pointer accent-blue-500 hidden sm:block"
+                  />
+                </div>
+
+                {/* Playback Speed */}
+                <button
+                  onClick={cyclePlaybackSpeed}
+                  className="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 font-mono transition-colors cursor-pointer"
+                  title="Playback Speed"
+                >
+                  {playbackSpeed}x
+                </button>
+
+                {/* Fit Mode Toggle */}
+                <button
+                  onClick={toggleFitMode}
+                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer hidden md:block"
+                  title={fitMode === 'cover' ? 'Fit frame (Contain)' : 'Fill screen (Cover)'}
+                >
+                  <Scan className="w-4 h-4" />
+                </button>
+
+                {/* Fullscreen Toggle */}
+                <button
+                  onClick={toggleFullscreen}
+                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                  title={isFullscreen ? 'Exit Fullscreen (F)' : 'Fullscreen (F)'}
+                >
+                  {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

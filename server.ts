@@ -41,7 +41,7 @@ async function startServer() {
       completedTopics: [],
       completedVisualizations: [],
       quizScore: null,
-      quizProgress: { completed: 0, total: 10 },
+      quizProgress: { completed: 0, total: 14 },
       quizState: null,
       gameScore: 0,
       gameXP: 0,

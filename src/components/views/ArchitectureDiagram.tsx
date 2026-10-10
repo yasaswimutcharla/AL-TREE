@@ -28,7 +28,7 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ topicI
 
             {/* SVG Visual Diagram */}
             <div className={`p-4 sm:p-6 rounded-2xl border flex flex-col items-center justify-center overflow-x-auto ${
-              isDarkMode ? 'bg-[#070a12] border-violet-950/80' : 'bg-blue-50/40 border-blue-100'
+              isDarkMode ? 'bg-[#070a12] border-violet-950/80' : 'bg-slate-50/80 border-slate-200/90'
             }`}>
               <svg viewBox="0 0 460 220" className="w-full max-w-lg h-auto">
                 <defs>
@@ -38,11 +38,11 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ topicI
                 </defs>
 
                 {/* Edges */}
-                <line x1="230" y1="45" x2="130" y2="105" stroke={isDarkMode ? '#6d28d9' : '#a5b4fc'} strokeWidth="2.5" />
-                <line x1="230" y1="45" x2="330" y2="105" stroke={isDarkMode ? '#6d28d9' : '#a5b4fc'} strokeWidth="2.5" />
-                <line x1="130" y1="115" x2="75" y2="175" stroke={isDarkMode ? '#6d28d9' : '#a5b4fc'} strokeWidth="2.5" />
-                <line x1="130" y1="115" x2="185" y2="175" stroke={isDarkMode ? '#6d28d9' : '#a5b4fc'} strokeWidth="2.5" />
-                <line x1="330" y1="115" x2="330" y2="175" stroke={isDarkMode ? '#6d28d9' : '#a5b4fc'} strokeWidth="2.5" />
+                <line x1="230" y1="45" x2="130" y2="105" stroke={isDarkMode ? '#6d28d9' : '#818cf8'} strokeWidth="2.5" />
+                <line x1="230" y1="45" x2="330" y2="105" stroke={isDarkMode ? '#6d28d9' : '#818cf8'} strokeWidth="2.5" />
+                <line x1="130" y1="115" x2="75" y2="175" stroke={isDarkMode ? '#6d28d9' : '#818cf8'} strokeWidth="2.5" />
+                <line x1="130" y1="115" x2="185" y2="175" stroke={isDarkMode ? '#6d28d9' : '#818cf8'} strokeWidth="2.5" />
+                <line x1="330" y1="115" x2="330" y2="175" stroke={isDarkMode ? '#6d28d9' : '#818cf8'} strokeWidth="2.5" />
 
                 {/* Edge Label Callout */}
                 <rect x="150" y="65" width="54" height="20" rx="6" fill={isDarkMode ? '#1e1b4b' : '#e0e7ff'} stroke={isDarkMode ? '#6366f1' : '#818cf8'} strokeWidth="1" />
@@ -88,25 +88,25 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ topicI
             {/* Architecture Legend */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
               <div className={`p-2.5 rounded-xl border text-center ${
-                isDarkMode ? 'bg-[#090d18] border-violet-950/70' : 'bg-white border-blue-100 text-black'
+                isDarkMode ? 'bg-[#090d18] border-violet-950/70' : 'bg-slate-50/80 border-slate-200 text-slate-900'
               }`}>
-                <div className={`text-[10px] font-mono uppercase font-bold ${isDarkMode ? 'text-violet-400' : 'text-violet-700'}`}>Root Node</div>
+                <div className={`text-[10px] font-mono uppercase font-bold ${isDarkMode ? 'text-violet-400' : 'text-indigo-700'}`}>Root Node</div>
                 <div className="text-[11px] font-semibold opacity-80 mt-0.5">Top starting point</div>
               </div>
               <div className={`p-2.5 rounded-xl border text-center ${
-                isDarkMode ? 'bg-[#090d18] border-violet-950/70' : 'bg-white border-blue-100 text-black'
+                isDarkMode ? 'bg-[#090d18] border-violet-950/70' : 'bg-slate-50/80 border-slate-200 text-slate-900'
               }`}>
                 <div className={`text-[10px] font-mono uppercase font-bold ${isDarkMode ? 'text-indigo-400' : 'text-indigo-700'}`}>Edges</div>
                 <div className="text-[11px] font-semibold opacity-80 mt-0.5">Connection links</div>
               </div>
               <div className={`p-2.5 rounded-xl border text-center ${
-                isDarkMode ? 'bg-[#090d18] border-violet-950/70' : 'bg-white border-blue-100 text-black'
+                isDarkMode ? 'bg-[#090d18] border-violet-950/70' : 'bg-slate-50/80 border-slate-200 text-slate-900'
               }`}>
                 <div className={`text-[10px] font-mono uppercase font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-700'}`}>Parent / Child</div>
                 <div className="text-[11px] font-semibold opacity-80 mt-0.5">Branch hierarchy</div>
               </div>
               <div className={`p-2.5 rounded-xl border text-center ${
-                isDarkMode ? 'bg-[#090d18] border-violet-950/70' : 'bg-white border-blue-100 text-black'
+                isDarkMode ? 'bg-[#090d18] border-violet-950/70' : 'bg-slate-50/80 border-slate-200 text-slate-900'
               }`}>
                 <div className={`text-[10px] font-mono uppercase font-bold ${isDarkMode ? 'text-emerald-400' : 'text-emerald-700'}`}>Leaf Nodes</div>
                 <div className="text-[11px] font-semibold opacity-80 mt-0.5">0 children (ends)</div>

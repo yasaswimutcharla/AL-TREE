@@ -41,7 +41,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
       className={`h-16 px-4 sm:px-6 flex items-center justify-between border-b sticky top-0 z-30 transition-colors duration-200 backdrop-blur-md relative ${
         isDarkMode
           ? 'bg-black/95 border-zinc-900 text-slate-100'
-          : 'bg-white/95 border-indigo-100/80 text-slate-900'
+          : 'bg-white/95 border-slate-200 text-slate-900 shadow-xs'
       }`}
     >
       {/* Left side: Hamburger menu button + AlgoLearn Logo at top left in place of section headings */}
@@ -54,7 +54,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
             className={`p-2 rounded-xl transition-all cursor-pointer ${
               isDarkMode
                 ? 'hover:bg-zinc-900 text-slate-300 hover:text-white'
-                : 'hover:bg-indigo-50 text-slate-700 hover:text-indigo-950'
+                : 'hover:bg-slate-100 text-slate-700 hover:text-slate-950'
             }`}
           >
             <Menu className="w-5 h-5" />
@@ -84,13 +84,13 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all cursor-pointer ${
             isDarkMode
               ? 'border-zinc-800 bg-[#0d0d0d] hover:bg-zinc-900 text-amber-300'
-              : 'border-indigo-200 bg-indigo-50/60 hover:bg-indigo-100 text-indigo-600'
+              : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-indigo-700'
           }`}
         >
           {isDarkMode ? (
             <Sun className="w-4 h-4 text-amber-400" />
           ) : (
-            <Moon className="w-4 h-4 text-indigo-600" />
+            <Moon className="w-4 h-4 text-indigo-700" />
           )}
         </button>
 
@@ -102,11 +102,11 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all cursor-pointer ${
             isDarkMode
               ? 'border-zinc-800 bg-[#0d0d0d] hover:bg-zinc-900 text-indigo-300 hover:text-white'
-              : 'border-indigo-200 bg-indigo-50/60 hover:bg-indigo-100 text-indigo-700 hover:text-black'
+              : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-indigo-700 hover:text-slate-950'
           }`}
         >
           {isSoundOn ? (
-            <Volume2 className={`w-4 h-4 ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`} />
+            <Volume2 className={`w-4 h-4 ${isDarkMode ? 'text-indigo-400' : 'text-indigo-700'}`} />
           ) : (
             <VolumeX className={`w-4 h-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
           )}

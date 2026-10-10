@@ -159,14 +159,14 @@ export interface UserSummary {
 export interface TopicPointsDetail {
   topicId: TopicId;
   title: string;
-  visualizePoints: number; // 0 to 50
-  visualizeTotal: number;  // 50
-  quizPoints: number;      // 0 to 50
-  quizTotal: number;       // 50
+  visualizePoints: number; // 0 to 30
+  visualizeTotal: number;  // 30
+  quizPoints: number;      // 0 to 70
+  quizTotal: number;       // 70
   totalPoints: number;     // 0 to 100
   maxPoints: number;       // 100
-  hintsUsedCount: number;
-  guidedSolveUsedCount: number;
+  hintsUsedCount?: number;
+  guidedSolveUsedCount?: number;
   incorrectAnswersCount: number;
   totalDeductions: number;
 }

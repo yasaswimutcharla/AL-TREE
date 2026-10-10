@@ -44,26 +44,28 @@ export const TerminologyArchitectureDiagrams: React.FC<TerminologyArchitectureDi
       className={`p-5 sm:p-7 rounded-3xl border transition-all ${
         isDarkMode
           ? 'bg-[#0a0f1d] border-violet-900/50 text-slate-100 shadow-xl'
-          : 'bg-white border-blue-100 text-black shadow-sm'
+          : 'bg-white border-slate-200/90 text-slate-900 shadow-sm'
       }`}
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-violet-950/60">
+      <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b ${
+        isDarkMode ? 'border-violet-950/60' : 'border-slate-200'
+      }`}>
         <div className="flex items-center gap-2.5">
           <div
             className={`w-8 h-8 rounded-xl flex items-center justify-center ${
               isDarkMode
                 ? 'bg-violet-950/80 border border-violet-800/60 text-violet-300'
-                : 'bg-violet-50 border border-violet-200 text-violet-700'
+                : 'bg-indigo-50 border border-indigo-200 text-indigo-700'
             }`}
           >
             <Network className="w-4 h-4" />
           </div>
           <div>
-            <h3 className={`text-sm font-bold tracking-tight ${isDarkMode ? 'text-violet-300' : 'text-violet-900 font-extrabold'}`}>
+            <h3 className={`text-sm font-bold tracking-tight ${isDarkMode ? 'text-violet-300' : 'text-slate-900 font-extrabold'}`}>
               Complete Tree Architecture Blueprint
             </h3>
-            <p className="text-xs opacity-75">
+            <p className={`text-xs ${isDarkMode ? 'opacity-75' : 'text-slate-600'}`}>
               Interactive visual layout of all 15 terminology concepts
             </p>
           </div>
@@ -73,7 +75,7 @@ export const TerminologyArchitectureDiagrams: React.FC<TerminologyArchitectureDi
           className={`text-[11px] font-mono font-semibold px-3 py-1 rounded-full border self-start sm:self-auto ${
             isDarkMode
               ? 'bg-violet-950/50 text-violet-300 border-violet-800/40'
-              : 'bg-violet-50 text-violet-800 border-violet-200 font-bold'
+              : 'bg-indigo-50 text-indigo-700 border-indigo-200 font-bold'
           }`}
         >
           Visual Diagram
@@ -83,7 +85,7 @@ export const TerminologyArchitectureDiagrams: React.FC<TerminologyArchitectureDi
       {/* Filter Chips Bar */}
       <div className="mb-5">
         <div className={`text-[11px] font-mono uppercase tracking-wider font-bold mb-2 flex items-center gap-1.5 ${
-          isDarkMode ? 'text-violet-400' : 'text-violet-700'
+          isDarkMode ? 'text-violet-400' : 'text-indigo-700'
         }`}>
           <Compass className="w-3.5 h-3.5" />
           <span>Filter Visual Focus:</span>
@@ -101,7 +103,7 @@ export const TerminologyArchitectureDiagrams: React.FC<TerminologyArchitectureDi
                     ? 'bg-violet-600 text-white border-violet-500 shadow-sm shadow-violet-600/30'
                     : isDarkMode
                     ? 'bg-[#0e1424] text-slate-300 border-violet-900/40 hover:bg-[#151c2e] hover:text-white'
-                    : 'bg-blue-50 text-blue-900 border-blue-200 hover:bg-blue-100 hover:text-black'
+                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
                 {btn.label}
@@ -114,7 +116,7 @@ export const TerminologyArchitectureDiagrams: React.FC<TerminologyArchitectureDi
       {/* Main SVG Architecture Diagram Canvas */}
       <div
         className={`p-4 sm:p-6 rounded-2xl border flex flex-col items-center justify-center overflow-x-auto relative ${
-          isDarkMode ? 'bg-[#060913] border-violet-950/90' : 'bg-blue-50/50 border-blue-100'
+          isDarkMode ? 'bg-[#060913] border-violet-950/90' : 'bg-slate-50/80 border-slate-200/80'
         }`}
       >
         <svg

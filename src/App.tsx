@@ -118,9 +118,13 @@ export default function App() {
 
   const handleToggleVideoCompleted = () => {
     setIsVideoCompleted((prev) => {
-      const next = !prev;
-      setUserItem(activeUserId, 'video_completed', String(next));
-      return next;
+      // Award 30 points only when the student watches the entire video to completion.
+      // Award the points only once for this video. Do not award points again for replaying.
+      if (!prev) {
+        setUserItem(activeUserId, 'video_completed', 'true');
+        return true;
+      }
+      return prev;
     });
   };
 
@@ -158,10 +162,10 @@ export default function App() {
       if (quizState) {
         const parsed = JSON.parse(quizState);
         const count = Object.keys(parsed?.confirmedQuestions || {}).length;
-        return { completed: count, total: 10 };
+        return { completed: count, total: 14 };
       }
     } catch {}
-    return { completed: 0, total: 10 };
+    return { completed: 0, total: 14 };
   });
 
   const [quizKey, setQuizKey] = useState<number>(0);
@@ -185,7 +189,7 @@ export default function App() {
         setCurrentUser(data);
         setCompletedTopics(data.completedTopics || []);
         setQuizScore(data.quizScore || null);
-        setQuizProgress(data.quizProgress || { completed: 0, total: 10 });
+        setQuizProgress(data.quizProgress || { completed: 0, total: 14 });
         setIsVideoCompleted(Boolean(data.videoCompleted));
         setCompletedVisualizations(data.completedVisualizations || []);
       }
@@ -208,25 +212,22 @@ export default function App() {
       return;
     }
 
-    // Overall TreeDSA progress calculation (weighted: 60% learn, 20% viz, 20% quiz)
-    const totalTopicsCount = 7;
-    const learnWeight = (completedTopics.length / totalTopicsCount) * 60;
-    const vizWeight = isVideoCompleted ? 20 : 0;
-    const quizWeight = quizScore
-      ? (quizScore.score / quizScore.total) * 20
-      : (quizProgress.completed / 10) * 10;
-    const overallPercentage = Math.min(100, Math.round(learnWeight + vizWeight + quizWeight));
-    const calcXP =
-      completedTopics.length * 10 +
-      (isVideoCompleted ? 20 : 0) +
-      (quizScore ? quizScore.score * 10 : quizProgress.completed * 5);
+    // TREES TOPIC — POINTS CONFIGURATION:
+    // Visualize section: 30 points (awarded only when video is 100% completed)
+    // Quiz section: 70 points maximum (14 questions: +5 correct, −2 incorrect, 0 timeout/unanswered)
+    // Maximum topic score: 100 points
+    const vizPoints = isVideoCompleted ? 30 : 0;
+    const currentQuizPts = quizScore ? Math.max(0, Math.min(70, quizScore.score)) : 0;
+    const totalTopicScore = Math.max(0, Math.min(100, vizPoints + currentQuizPts));
+    const overallPercentage = totalTopicScore;
+    const calcXP = totalTopicScore;
 
     const updatedUser: UserData = {
       ...currentUser,
       userId: activeUserId,
       progress: overallPercentage,
       xp: calcXP,
-      score: quizScore?.score || 0,
+      score: totalTopicScore,
       completedTopics,
       completedVisualizations,
       quizScore,
@@ -243,29 +244,34 @@ export default function App() {
       const w = window as any;
       w.currentUser = updatedUser;
       w.activeUserId = activeUserId;
-      w.overallProgress = overallPercentage;
-      w.score = quizScore?.score || 0;
+      w.overallProgress = totalTopicScore;
+      w.score = totalTopicScore;
       w.xp = calcXP;
+      w.vizPoints = vizPoints;
+      w.quizScore = currentQuizPts;
+      w.totalTopicScore = totalTopicScore;
       w.completedTopics = completedTopics;
       w.learnCompleted = completedTopics.length;
       w.visualizeCompleted = isVideoCompleted ? 1 : 0;
       w.gameProgress = quizProgress.completed;
-      w.gameScore = quizScore?.score || 0;
+      w.gameScore = totalTopicScore;
       w.gameXP = calcXP;
       w.quizAnswered = quizProgress.completed;
-      w.quizScore = quizScore?.score || 0;
       w.treeDsaProgress = {
-        overallProgress: overallPercentage,
-        score: quizScore?.score || 0,
+        overallProgress: totalTopicScore,
+        score: totalTopicScore,
         xp: calcXP,
+        vizPoints,
+        quizPoints: currentQuizPts,
+        totalTopicScore,
         completedTopics,
         learnCompleted: completedTopics.length,
         visualizeCompleted: isVideoCompleted ? 1 : 0,
         gameProgress: quizProgress.completed,
-        gameScore: quizScore?.score || 0,
+        gameScore: totalTopicScore,
         gameXP: calcXP,
         quizAnswered: quizProgress.completed,
-        quizScore: quizScore?.score || 0,
+        quizScore: currentQuizPts,
       };
     }
   }, [completedTopics, quizScore, quizProgress, isVideoCompleted, completedVisualizations, activeUserId]);
@@ -288,7 +294,7 @@ export default function App() {
     setCurrentUser(data);
     setCompletedTopics(data.completedTopics || []);
     setQuizScore(data.quizScore || null);
-    setQuizProgress(data.quizProgress || { completed: 0, total: 10 });
+    setQuizProgress(data.quizProgress || { completed: 0, total: 14 });
     setIsVideoCompleted(Boolean(data.videoCompleted));
     setCompletedVisualizations(data.completedVisualizations || []);
     setQuizKey((prev) => prev + 1);
@@ -306,7 +312,7 @@ export default function App() {
     setCurrentUser(newUser);
     setCompletedTopics([]);
     setQuizScore(null);
-    setQuizProgress({ completed: 0, total: 10 });
+    setQuizProgress({ completed: 0, total: 14 });
     setIsVideoCompleted(false);
     setCompletedVisualizations([]);
     setQuizKey((prev) => prev + 1);
@@ -323,7 +329,7 @@ export default function App() {
     setCurrentUser(freshUser);
     setCompletedTopics([]);
     setQuizScore(null);
-    setQuizProgress({ completed: 0, total: 10 });
+    setQuizProgress({ completed: 0, total: 14 });
     setIsVideoCompleted(false);
     setCompletedVisualizations([]);
     setQuizKey((prev) => prev + 1);
@@ -336,7 +342,7 @@ export default function App() {
     // 1. Reset all React state to initial zero/empty state for active user
     setCompletedTopics([]);
     setQuizScore(null);
-    setQuizProgress({ completed: 0, total: 10 });
+    setQuizProgress({ completed: 0, total: 14 });
     setIsVideoCompleted(false);
     setCompletedVisualizations([]);
     setQuizKey((prev) => prev + 1);

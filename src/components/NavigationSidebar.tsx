@@ -55,10 +55,10 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
   })();
 
   // Activity counts matching lesson curriculum
-  const totalActivities = 18;
+  const totalActivities = 22;
   const learnTotal = 7;
   const vizTotal = 1;
-  const quizTotal = 10;
+  const quizTotal = 14;
 
   // Real dynamic completion
   const learnCompleted = Math.min(completedTopics.length, learnTotal);
@@ -79,17 +79,17 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
   const getBadgeValue = (id: NavItem): string => {
     switch (id) {
       case 'home':
-        return `${totalCompleted}/${totalActivities}`;
+        return `${overallPercent}%`;
       case 'learn':
-        return `${learnCompleted}/${learnTotal}`;
+        return `${learnCompleted} / ${learnTotal}`;
       case 'visualize':
-        return `${vizCompleted}/${vizTotal}`;
+        return `${vizCompleted} / ${vizTotal}`;
       case 'quiz':
-        return `${quizCompleted}/${quizTotal}`;
+        return `${quizCompleted} / ${quizTotal}`;
       case 'progress':
         return `${overallPercent}%`;
       default:
-        return '0';
+        return '0%';
     }
   };
 
@@ -141,7 +141,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
         className={`fixed top-0 bottom-0 left-0 z-50 w-64 sm:w-72 flex flex-col transition-transform duration-300 ease-in-out border-r ${
           isDarkMode
             ? 'bg-black border-zinc-900 text-slate-200 shadow-2xl shadow-black'
-            : 'bg-white border-slate-150 text-slate-900 shadow-lg md:shadow-none'
+            : 'bg-white border-slate-200 text-slate-900 shadow-xl md:shadow-none'
         } ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
@@ -149,10 +149,10 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
         {/* Sidebar Header matching Screenshot (105) */}
         <div
           className={`px-4 py-4 flex items-center justify-between border-b ${
-            isDarkMode ? 'border-zinc-900' : 'border-slate-100'
+            isDarkMode ? 'border-zinc-900' : 'border-slate-200'
           }`}
         >
-          <span className="text-xs font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500 font-sans select-none">
+          <span className="text-xs font-bold tracking-wider uppercase text-slate-500 font-sans select-none">
             NAVIGATION MENU
           </span>
 
@@ -167,7 +167,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
             }}
             title="Close Navigation Menu"
             aria-label="Close Navigation Menu"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -193,10 +193,10 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                     isActive
                       ? isDarkMode
                         ? 'bg-zinc-900 border-zinc-800 text-white font-semibold'
-                        : 'bg-[#EEF2FF] border-transparent text-[#1E1B4B] font-semibold'
+                        : 'bg-indigo-50 border-indigo-200 text-[#1E1B4B] font-bold shadow-xs'
                       : isDarkMode
                       ? 'text-slate-400 hover:text-slate-100 hover:bg-zinc-900/60 border-transparent font-medium'
-                      : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 border-transparent font-medium'
+                      : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100/80 border-transparent font-medium'
                   }`}
                 >
                   {/* Icon Container: vibrant rounded square for active; soft bordered square for inactive */}
@@ -206,7 +206,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                         ? 'bg-[#4F46E5] text-white shadow-sm'
                         : isDarkMode
                         ? 'bg-zinc-950 border border-zinc-800 text-slate-400 group-hover:text-indigo-400 group-hover:border-zinc-700'
-                        : 'bg-[#F8FAFC] border border-slate-200/70 text-slate-400 group-hover:text-indigo-600 group-hover:border-indigo-200'
+                        : 'bg-slate-50 border border-slate-200 text-slate-600 group-hover:text-indigo-600 group-hover:border-indigo-200 group-hover:bg-indigo-50/50'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -221,30 +221,32 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                           : 'text-[#1E1B4B]'
                         : isDarkMode
                         ? 'text-slate-300 group-hover:text-white'
-                        : 'text-slate-700 group-hover:text-slate-900'
+                        : 'text-slate-800 group-hover:text-slate-950'
                     }`}
                   >
                     {item.label}
                   </span>
 
-                  {/* Progress Badge Pill: only displayed when cursor goes to that navigation menu */}
-                  <span
-                    className={`ml-auto text-xs font-mono font-bold px-2.5 py-0.5 rounded-full select-none transition-all duration-200 ${
-                      isHovered
-                        ? 'opacity-100 translate-x-0'
-                        : 'opacity-0 translate-x-2 pointer-events-none'
-                    } ${
-                      isActive
-                        ? isDarkMode
-                          ? 'bg-zinc-800 text-indigo-300'
-                          : 'bg-[#E0E7FF] text-[#4F46E5]'
-                        : isDarkMode
-                        ? 'bg-zinc-950 text-blue-400 group-hover:bg-zinc-800'
-                        : 'bg-[#EFF6FF] text-[#3B82F6] group-hover:bg-indigo-50'
-                    }`}
-                  >
-                    {badge}
-                  </span>
+                  {/* Progress Badge Pill - Only shown when cursor enters navigation menu */}
+                  {isNavHovered && (
+                    <span
+                      className={`ml-auto text-xs font-mono font-bold px-2.5 py-0.5 rounded-full select-none transition-all duration-200 animate-fadeIn ${
+                        item.id === 'progress'
+                          ? isDarkMode
+                            ? 'bg-amber-500/15 text-amber-300 border border-amber-500/40'
+                            : 'bg-amber-100 text-amber-900 border border-amber-300'
+                          : isActive
+                          ? isDarkMode
+                            ? 'bg-zinc-800 text-indigo-300'
+                            : 'bg-indigo-100 text-indigo-800 border border-indigo-200'
+                          : isDarkMode
+                          ? 'bg-zinc-950 text-blue-400 group-hover:bg-zinc-800'
+                          : 'bg-slate-100 text-slate-700 group-hover:bg-indigo-100 group-hover:text-indigo-800 border border-slate-200'
+                      }`}
+                    >
+                      {badge}
+                    </span>
+                  )}
                 </button>
               );
             })}

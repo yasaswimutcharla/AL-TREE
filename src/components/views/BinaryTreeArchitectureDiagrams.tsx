@@ -304,13 +304,17 @@ export const BinaryTreeArchitectureDiagrams: React.FC<BinaryTreeArchitectureDiag
           className={`p-5 sm:p-6 rounded-3xl border transition-all ${
             isDarkMode
               ? 'bg-[#0a0f1d] border-violet-900/40 text-slate-100 shadow-lg'
-              : 'bg-white border-blue-100 text-black shadow-sm'
+              : 'bg-white border-slate-200/90 text-slate-900 shadow-sm'
           }`}
         >
           {/* Block Header */}
           <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <div className="flex items-center gap-2.5">
-              <span className="w-6 h-6 rounded-lg bg-violet-600/20 border border-violet-500/30 text-violet-400 font-mono font-bold text-xs flex items-center justify-center">
+              <span className={`w-6 h-6 rounded-lg font-mono font-bold text-xs flex items-center justify-center border ${
+                isDarkMode
+                  ? 'bg-violet-600/20 border-violet-500/30 text-violet-400'
+                  : 'bg-indigo-50 border-indigo-200 text-indigo-700'
+              }`}>
                 {block.letter}
               </span>
               <h4 className="text-base sm:text-lg font-bold tracking-tight">
@@ -330,7 +334,9 @@ export const BinaryTreeArchitectureDiagrams: React.FC<BinaryTreeArchitectureDiag
           </div>
 
           {/* Short Explanation */}
-          <p className="text-xs sm:text-sm opacity-90 leading-relaxed mb-4">
+          <p className={`text-xs sm:text-sm leading-relaxed mb-4 ${
+            isDarkMode ? 'opacity-90 text-slate-200' : 'text-slate-600'
+          }`}>
             {block.explanation}
           </p>
 
@@ -339,7 +345,7 @@ export const BinaryTreeArchitectureDiagrams: React.FC<BinaryTreeArchitectureDiag
             className={`p-4 sm:p-5 rounded-2xl border flex flex-col items-center justify-center overflow-x-auto my-3 ${
               isDarkMode
                 ? 'bg-[#060913] border-violet-950/90'
-                : 'bg-blue-50/50 border-blue-100'
+                : 'bg-slate-50/80 border-slate-200/80'
             }`}
           >
             {block.renderSvg(isDarkMode)}
@@ -350,11 +356,11 @@ export const BinaryTreeArchitectureDiagrams: React.FC<BinaryTreeArchitectureDiag
             className={`p-3 rounded-xl border text-xs flex items-center gap-2 mt-3 ${
               isDarkMode
                 ? 'bg-[#121829] border-violet-950/80 text-slate-300'
-                : 'bg-blue-50 border-blue-100 text-blue-900'
+                : 'bg-indigo-50/80 border-indigo-200 text-indigo-950 font-medium'
             }`}
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-violet-400 shrink-0" />
-            <span className="opacity-95">{block.note}</span>
+            <CheckCircle2 className="w-3.5 h-3.5 text-indigo-500 dark:text-violet-400 shrink-0" />
+            <span>{block.note}</span>
           </div>
         </div>
       ))}

@@ -106,7 +106,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
           className={`w-full p-4 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
             isDarkMode
               ? 'bg-[#0e1424] border-violet-900/50 text-slate-100'
-              : 'bg-white border-blue-100 text-black shadow-xs'
+              : 'bg-white border-slate-200 text-slate-900 shadow-xs'
           }`}
         >
           <div className="flex items-center gap-3">
@@ -119,9 +119,9 @@ export const LearnView: React.FC<LearnViewProps> = ({
             </div>
             <div className="text-left">
               <div className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
-                isDarkMode ? 'text-violet-400' : 'text-violet-700'
+                isDarkMode ? 'text-violet-400' : 'text-indigo-700'
               }`}>
-                Table of Contents · <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>0{currentTopic.index}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>0{TREE_TOPICS.length}</span>
+                Table of Contents · <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>0{currentTopic.index}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>0{TREE_TOPICS.length}</span>
               </div>
               <div className="text-xs font-bold truncate max-w-[200px] sm:max-w-xs">
                 {currentTopic.title}
@@ -131,11 +131,11 @@ export const LearnView: React.FC<LearnViewProps> = ({
 
           <div className="flex items-center gap-2">
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-              isDarkMode ? 'bg-violet-600/20 text-slate-300' : 'bg-violet-100 text-violet-800'
+              isDarkMode ? 'bg-violet-600/20 text-slate-300' : 'bg-indigo-100 text-indigo-800'
             }`}>
-              <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>{completedCount}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>{TREE_TOPICS.length}</span> Done
+              <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>{completedCount}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>{TREE_TOPICS.length}</span> Done
             </span>
-            <span className={`text-xs font-bold ${isDarkMode ? 'text-violet-400' : 'text-violet-700'}`}>
+            <span className={`text-xs font-bold ${isDarkMode ? 'text-violet-400' : 'text-indigo-700'}`}>
               {isMobileSyllabusOpen ? 'Hide ▲' : 'Browse ▼'}
             </span>
           </div>
@@ -157,22 +157,22 @@ export const LearnView: React.FC<LearnViewProps> = ({
             className={`p-5 rounded-3xl border transition-all duration-200 ${
               isDarkMode
                 ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-xl shadow-violet-950/20'
-                : 'bg-white border-blue-100 text-black shadow-sm'
+                : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
             }`}
           >
             {/* TOC Header */}
-            <div className={`pb-3 border-b ${isDarkMode ? 'border-violet-950/60' : 'border-blue-100'} mb-4`}>
+            <div className={`pb-3 border-b ${isDarkMode ? 'border-violet-950/60' : 'border-slate-200'} mb-4`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                      isDarkMode ? 'bg-violet-600/30 text-violet-300' : 'bg-indigo-100 text-indigo-600'
+                      isDarkMode ? 'bg-violet-600/30 text-violet-300' : 'bg-indigo-100 text-indigo-700'
                     }`}
                   >
                     <ListFilter className="w-4 h-4" />
                   </div>
                   <h2 className={`text-xs font-bold font-mono uppercase tracking-widest ${
-                    isDarkMode ? 'text-violet-400' : 'text-violet-800'
+                    isDarkMode ? 'text-violet-400' : 'text-indigo-800'
                   }`}>
                     Table of Contents
                   </h2>
@@ -182,10 +182,10 @@ export const LearnView: React.FC<LearnViewProps> = ({
                   className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md ${
                     isDarkMode
                       ? 'text-white bg-violet-600/20 border border-violet-500/30'
-                      : 'text-violet-800 bg-violet-100 border border-violet-200'
+                      : 'text-indigo-800 bg-indigo-50 border border-indigo-200'
                   }`}
                 >
-                  <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>{completedCount}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>{TREE_TOPICS.length}</span>
+                  <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>{completedCount}</span>/<span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>{TREE_TOPICS.length}</span>
                 </span>
               </div>
             </div>
@@ -210,17 +210,17 @@ export const LearnView: React.FC<LearnViewProps> = ({
                       isSelected
                         ? isDarkMode
                           ? 'bg-violet-950/60 border-violet-500/70 text-white shadow-md shadow-violet-950/50 ring-1 ring-violet-500/40'
-                          : 'bg-violet-50 border-violet-400 text-violet-950 shadow-xs ring-1 ring-violet-300'
+                          : 'bg-indigo-50 border-indigo-400 text-indigo-950 shadow-xs ring-1 ring-indigo-300'
                         : isDarkMode
                         ? 'bg-[#090d18]/80 border-violet-950/70 hover:bg-[#121929] hover:border-violet-700/50 text-slate-300'
-                        : 'bg-blue-50/50 border-blue-100 hover:bg-white hover:border-blue-300 text-blue-900 hover:text-black'
+                        : 'bg-slate-50/80 border-slate-200/80 hover:bg-white hover:border-indigo-300 text-slate-800 hover:text-slate-950 shadow-2xs'
                     }`}
                   >
                     <div className="min-w-0 flex-1 pr-2">
                       <div className="flex items-baseline gap-2">
                         <span
                           className={`text-xs font-mono font-bold shrink-0 ${
-                            isDarkMode ? 'text-white font-extrabold' : 'text-slate-900 font-extrabold'
+                            isDarkMode ? 'text-white font-extrabold' : isSelected ? 'text-indigo-700 font-extrabold' : 'text-slate-500 font-bold group-hover:text-slate-800'
                           }`}
                         >
                           {formattedNum}.
@@ -230,8 +230,8 @@ export const LearnView: React.FC<LearnViewProps> = ({
                             isSelected
                               ? isDarkMode
                                 ? 'text-white'
-                                : 'text-violet-950 font-extrabold'
-                              : ''
+                                : 'text-indigo-950 font-extrabold'
+                              : 'text-slate-800 group-hover:text-indigo-950'
                           }`}
                         >
                           {topic.title.replace(/^\d+\.\s*/, '')}
@@ -242,8 +242,8 @@ export const LearnView: React.FC<LearnViewProps> = ({
                           isSelected
                             ? isDarkMode
                               ? 'text-violet-200/80'
-                              : 'text-violet-900 font-medium'
-                            : 'opacity-60'
+                              : 'text-indigo-800 font-medium'
+                            : 'text-slate-500 group-hover:text-slate-700 font-medium'
                         }`}
                       >
                         {subtitle}
@@ -276,7 +276,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
             className={`p-6 sm:p-8 rounded-3xl border transition-all duration-200 ${
               isDarkMode
                 ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-xl shadow-violet-950/20'
-                : 'bg-white border-blue-100 text-black shadow-sm'
+                : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
             }`}
           >
             {/* Eyebrow & Badges */}
@@ -284,15 +284,15 @@ export const LearnView: React.FC<LearnViewProps> = ({
               <span className={`text-xs font-mono font-bold px-3 py-1 rounded-full border ${
                 isDarkMode
                   ? 'bg-violet-600/20 text-slate-300 border-violet-500/30'
-                  : 'bg-violet-100 text-violet-800 border-violet-300'
+                  : 'bg-indigo-50 text-indigo-800 border-indigo-200 font-bold'
               }`}>
-                TOPIC <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>0{currentTopic.index}</span> OF <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>0{TREE_TOPICS.length}</span>
+                TOPIC <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>0{currentTopic.index}</span> OF <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>0{TREE_TOPICS.length}</span>
               </span>
               <span
                 className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
                   isDarkMode
                     ? 'bg-[#151c2e] border-violet-950/70 text-emerald-400'
-                    : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                    : 'bg-emerald-50 border-emerald-200 text-emerald-800 font-bold'
                 }`}
               >
                 Beginner Friendly
@@ -305,7 +305,9 @@ export const LearnView: React.FC<LearnViewProps> = ({
             </h1>
 
             {/* Short Subtitle */}
-            <p className="text-sm sm:text-base mt-2 opacity-80 leading-relaxed max-w-3xl">
+            <p className={`text-sm sm:text-base mt-2 leading-relaxed max-w-3xl ${
+              isDarkMode ? 'text-slate-300 opacity-80' : 'text-slate-600'
+            }`}>
               {currentTopic.shortDescription}
             </p>
           </div>
@@ -319,12 +321,12 @@ export const LearnView: React.FC<LearnViewProps> = ({
               className={`p-6 sm:p-7 rounded-3xl border ${
                 isDarkMode
                   ? 'bg-[#0e1424] border-violet-900/40 text-slate-100'
-                  : 'bg-white border-blue-100 text-black shadow-sm'
+                  : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-2 mb-3">
-                <span className={`w-2.5 h-2.5 rounded-full ${isDarkMode ? 'bg-violet-400 shadow-xs shadow-violet-400' : 'bg-violet-600 shadow-xs shadow-violet-400/50'}`} />
-                <h3 className={`text-xs font-mono font-bold uppercase tracking-widest ${isDarkMode ? 'text-violet-400' : 'text-violet-700 font-extrabold'}`}>
+                <span className={`w-2.5 h-2.5 rounded-full ${isDarkMode ? 'bg-violet-400 shadow-xs shadow-violet-400' : 'bg-indigo-600 shadow-xs shadow-indigo-400/50'}`} />
+                <h3 className={`text-xs font-mono font-bold uppercase tracking-widest ${isDarkMode ? 'text-violet-400' : 'text-indigo-700 font-extrabold'}`}>
                   Definition
                 </h3>
               </div>
@@ -332,7 +334,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
               <blockquote className={`p-4 rounded-2xl border text-sm sm:text-base font-medium leading-relaxed ${
                 isDarkMode
                   ? 'bg-[#090d18] border-violet-950/80 text-violet-100'
-                  : 'bg-violet-50/80 border-violet-200 text-violet-950'
+                  : 'bg-indigo-50/70 border-indigo-200 text-indigo-950'
               }`}>
                 &ldquo;{currentTopic.definition.text}&rdquo;
               </blockquote>
@@ -348,7 +350,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
               className={`p-6 sm:p-7 rounded-3xl border transition-all duration-200 ${
                 isDarkMode
                   ? 'bg-[#0e1424] border-violet-900/40 text-slate-100 shadow-xl shadow-violet-950/20'
-                  : 'bg-white border-blue-100 text-black shadow-sm'
+                  : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-2 mb-3">
@@ -356,12 +358,12 @@ export const LearnView: React.FC<LearnViewProps> = ({
                   className={`w-2.5 h-2.5 rounded-full ${
                     isDarkMode
                       ? 'bg-violet-400 shadow-xs shadow-violet-400/60'
-                      : 'bg-violet-600 shadow-xs shadow-violet-400/50'
+                      : 'bg-indigo-600 shadow-xs shadow-indigo-400/50'
                   }`}
                 />
                 <h3
                   className={`text-xs font-mono font-bold uppercase tracking-widest ${
-                    isDarkMode ? 'text-violet-400' : 'text-violet-700 font-extrabold'
+                    isDarkMode ? 'text-violet-400' : 'text-indigo-700 font-extrabold'
                   }`}
                 >
                   Core Intuition
@@ -372,29 +374,29 @@ export const LearnView: React.FC<LearnViewProps> = ({
                 className={`p-4 rounded-2xl border mb-3 flex items-start gap-3 transition-colors duration-200 ${
                   isDarkMode
                     ? 'bg-violet-950/20 border-violet-500/30 text-violet-200'
-                    : 'bg-violet-50/80 border-violet-200 text-violet-950'
+                    : 'bg-indigo-50/70 border-indigo-200 text-indigo-950'
                 }`}
               >
                 <Lightbulb
                   className={`w-5 h-5 shrink-0 mt-0.5 ${
-                    isDarkMode ? 'text-violet-400' : 'text-violet-700'
+                    isDarkMode ? 'text-violet-400' : 'text-indigo-700'
                   }`}
                 />
                 <div>
                   <div
                     className={`text-xs font-bold uppercase tracking-wider mb-0.5 ${
-                      isDarkMode ? 'text-violet-400' : 'text-violet-700 font-extrabold'
+                      isDarkMode ? 'text-violet-400' : 'text-indigo-700 font-extrabold'
                     }`}
                   >
                     Real-World Analogy
                   </div>
-                  <p className={`text-xs sm:text-sm leading-relaxed ${isDarkMode ? 'text-violet-200' : 'text-violet-950 font-medium'}`}>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDarkMode ? 'text-violet-200' : 'text-indigo-950 font-medium'}`}>
                     {currentTopic.coreIntuition.analogy}
                   </p>
                 </div>
               </div>
 
-              <p className="text-sm leading-relaxed opacity-90">
+              <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-slate-300 opacity-90' : 'text-slate-600'}`}>
                 {currentTopic.coreIntuition.explanation}
               </p>
             </div>
@@ -409,7 +411,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
               className={`p-6 sm:p-7 rounded-3xl border ${
                 isDarkMode
                   ? 'bg-[#0e1424] border-violet-900/40 text-slate-100'
-                  : 'bg-white border-blue-100 text-black shadow-sm'
+                  : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-2 mb-4">
@@ -434,7 +436,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
                       className={`p-3.5 rounded-2xl border text-xs sm:text-sm flex items-start gap-3 ${
                         isDarkMode
                           ? 'bg-[#090d18] border-violet-950/70 text-slate-200'
-                          : 'bg-blue-50/40 border-blue-100 text-blue-950'
+                          : 'bg-slate-50/80 border-slate-200/90 text-slate-800'
                       }`}
                     >
                       <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0 mt-1.5" />
@@ -448,10 +450,10 @@ export const LearnView: React.FC<LearnViewProps> = ({
                             >
                               {termTitle}:
                             </span>
-                            <span className="font-normal opacity-95">{termContent}</span>
+                            <span className={`font-normal ${isDarkMode ? 'opacity-95' : 'text-slate-600'}`}>{termContent}</span>
                           </>
                         ) : (
-                          <span className="font-medium">{pt}</span>
+                          <span className={`font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}`}>{pt}</span>
                         )}
                       </div>
                     </div>
@@ -477,20 +479,20 @@ export const LearnView: React.FC<LearnViewProps> = ({
                         : 'bg-indigo-50 text-indigo-700 border-indigo-300 hover:bg-indigo-100'
                       : isDarkMode
                       ? 'bg-[#0e1424] hover:bg-[#151c2e] text-slate-300 border-violet-900/40 hover:text-violet-300'
-                      : 'bg-white hover:bg-blue-50 text-blue-900 border-blue-200 hover:text-black shadow-xs'
+                      : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200/90 hover:border-slate-300 shadow-2xs'
                   }`}
                 >
                   {showTerminologyArchitecture ? (
                     <>
-                      <EyeOff className={`w-3.5 h-3.5 ${isDarkMode ? 'text-violet-400' : 'text-violet-600'}`} />
+                      <EyeOff className={`w-3.5 h-3.5 ${isDarkMode ? 'text-violet-400' : 'text-indigo-600'}`} />
                       <span>Hide Architecture Diagram</span>
-                      <ChevronUp className={`w-3.5 h-3.5 ml-0.5 ${isDarkMode ? 'text-violet-400' : 'text-violet-600'}`} />
+                      <ChevronUp className={`w-3.5 h-3.5 ml-0.5 ${isDarkMode ? 'text-violet-400' : 'text-indigo-600'}`} />
                     </>
                   ) : (
                     <>
-                      <Eye className={`w-3.5 h-3.5 ${isDarkMode ? 'text-violet-400' : 'text-violet-600'}`} />
+                      <Eye className={`w-3.5 h-3.5 ${isDarkMode ? 'text-violet-400' : 'text-indigo-600'}`} />
                       <span>View Architecture Diagram</span>
-                      <ChevronDown className={`w-3.5 h-3.5 ml-0.5 ${isDarkMode ? 'text-violet-400' : 'text-violet-600'}`} />
+                      <ChevronDown className={`w-3.5 h-3.5 ml-0.5 ${isDarkMode ? 'text-violet-400' : 'text-indigo-600'}`} />
                     </>
                   )}
                 </button>
@@ -515,20 +517,20 @@ export const LearnView: React.FC<LearnViewProps> = ({
                         : 'bg-indigo-50 text-indigo-700 border-indigo-300 hover:bg-indigo-100'
                       : isDarkMode
                       ? 'bg-[#0e1424] hover:bg-[#151c2e] text-slate-300 border-violet-900/40 hover:text-violet-300'
-                      : 'bg-white hover:bg-blue-50 text-blue-900 border-blue-200 hover:text-black shadow-xs'
+                      : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200/90 hover:border-slate-300 shadow-2xs'
                   }`}
                 >
                   {showBinaryTreeArchitecture ? (
                     <>
-                      <EyeOff className={`w-3.5 h-3.5 ${isDarkMode ? 'text-violet-400' : 'text-violet-600'}`} />
+                      <EyeOff className={`w-3.5 h-3.5 ${isDarkMode ? 'text-violet-400' : 'text-indigo-600'}`} />
                       <span>Hide Architecture Diagram</span>
-                      <ChevronUp className={`w-3.5 h-3.5 ml-0.5 ${isDarkMode ? 'text-violet-400' : 'text-violet-600'}`} />
+                      <ChevronUp className={`w-3.5 h-3.5 ml-0.5 ${isDarkMode ? 'text-violet-400' : 'text-indigo-600'}`} />
                     </>
                   ) : (
                     <>
-                      <Eye className={`w-3.5 h-3.5 ${isDarkMode ? 'text-violet-400' : 'text-violet-600'}`} />
+                      <Eye className={`w-3.5 h-3.5 ${isDarkMode ? 'text-violet-400' : 'text-indigo-600'}`} />
                       <span>View Architecture Diagram</span>
-                      <ChevronDown className={`w-3.5 h-3.5 ml-0.5 ${isDarkMode ? 'text-violet-400' : 'text-violet-600'}`} />
+                      <ChevronDown className={`w-3.5 h-3.5 ml-0.5 ${isDarkMode ? 'text-violet-400' : 'text-indigo-600'}`} />
                     </>
                   )}
                 </button>
@@ -555,7 +557,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
               className={`p-6 sm:p-7 rounded-3xl border transition-all ${
                 isDarkMode
                   ? 'bg-[#0e1424] border-violet-800/40 text-slate-100 shadow-lg'
-                  : 'bg-white border-blue-100 text-black shadow-sm'
+                  : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
@@ -564,12 +566,12 @@ export const LearnView: React.FC<LearnViewProps> = ({
                     className={`w-2.5 h-2.5 rounded-full ${
                       isDarkMode
                         ? 'bg-violet-400 shadow-xs shadow-violet-400'
-                        : 'bg-violet-600 shadow-xs shadow-violet-400/50'
+                        : 'bg-indigo-600 shadow-xs shadow-indigo-400/50'
                     }`}
                   />
                   <h4
                     className={`text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-1.5 ${
-                      isDarkMode ? 'text-violet-400' : 'text-violet-700 font-extrabold'
+                      isDarkMode ? 'text-violet-400' : 'text-indigo-700 font-extrabold'
                     }`}
                   >
                     <HelpCircle className="w-4 h-4" />
@@ -580,14 +582,14 @@ export const LearnView: React.FC<LearnViewProps> = ({
                   className={`text-[10px] font-mono px-2 py-0.5 rounded font-semibold ${
                     isDarkMode
                       ? 'bg-violet-500/20 text-slate-300'
-                      : 'bg-violet-100 text-violet-800 border border-violet-200 font-bold'
+                      : 'bg-indigo-100 text-indigo-800 border border-indigo-200 font-bold'
                   }`}
                 >
-                  <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-900 font-bold'}>1</span>-Question Check
+                  <span className={isDarkMode ? 'text-white font-bold' : 'text-slate-950 font-bold'}>1</span>-Question Check
                 </span>
               </div>
 
-              <p className="text-xs font-semibold opacity-70 mb-2">
+              <p className={`text-xs font-semibold mb-2 ${isDarkMode ? 'opacity-70' : 'text-slate-600'}`}>
                 {currentTopic.miniPractice.instruction}
               </p>
 
@@ -603,22 +605,22 @@ export const LearnView: React.FC<LearnViewProps> = ({
 
                   let optionStyle = isDarkMode
                     ? 'bg-[#090d18] border-violet-950/70 hover:border-violet-600/50 text-slate-200'
-                    : 'bg-blue-50/40 border-blue-100 hover:border-blue-300 text-blue-900 hover:text-black';
+                    : 'bg-slate-50/80 border-slate-200/90 hover:border-indigo-300 hover:bg-white text-slate-800';
 
                   if (hasSubmittedPractice) {
                     if (isCorrect) {
                       optionStyle = isDarkMode
                         ? 'bg-emerald-950/40 border-emerald-500 text-emerald-200'
-                        : 'bg-emerald-50 border-emerald-400 text-emerald-900';
+                        : 'bg-emerald-50 border-emerald-400 text-emerald-900 font-bold';
                     } else if (isSelected && !isCorrect) {
                       optionStyle = isDarkMode
                         ? 'bg-rose-950/40 border-rose-500 text-rose-200'
-                        : 'bg-rose-50 border-rose-400 text-rose-900';
+                        : 'bg-rose-50 border-rose-400 text-rose-900 font-semibold';
                     }
                   } else if (isSelected) {
                     optionStyle = isDarkMode
                       ? 'bg-violet-950/60 border-violet-400 text-white ring-1 ring-violet-400'
-                      : 'bg-violet-50 border-violet-500 text-violet-950 ring-1 ring-violet-400 font-semibold';
+                      : 'bg-indigo-50 border-indigo-400 text-indigo-950 ring-1 ring-indigo-300 font-bold';
                   }
 
                   return (
@@ -629,14 +631,16 @@ export const LearnView: React.FC<LearnViewProps> = ({
                       className={`w-full text-left p-3.5 rounded-2xl border text-xs font-medium transition-all flex items-center justify-between cursor-pointer ${optionStyle}`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-mono font-bold shrink-0">
+                        <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-mono font-bold shrink-0 ${
+                          isSelected && !hasSubmittedPractice ? 'border-indigo-500 bg-indigo-100 text-indigo-900' : 'border-slate-300 bg-white text-slate-700'
+                        }`}>
                           {String.fromCharCode(65 + oIdx)}
                         </span>
                         <span>{opt}</span>
                       </div>
 
                       {hasSubmittedPractice && isCorrect && (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                       )}
                     </button>
                   );
@@ -652,8 +656,10 @@ export const LearnView: React.FC<LearnViewProps> = ({
                     selectedPracticeOption !== null
                       ? isDarkMode
                         ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/40'
-                        : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                      : 'opacity-40 cursor-not-allowed bg-blue-200 text-blue-900'
+                        : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm'
+                      : isDarkMode
+                      ? 'opacity-40 cursor-not-allowed bg-blue-200 text-blue-900'
+                      : 'bg-slate-100 border border-slate-200 text-slate-400 cursor-not-allowed'
                   }`}
                 >
                   Submit Answer
@@ -672,9 +678,9 @@ export const LearnView: React.FC<LearnViewProps> = ({
                     }`}
                   >
                     {selectedPracticeOption === currentTopic.miniPractice.correctIndex ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                     ) : (
-                      <HelpCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                      <HelpCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
                     )}
                     <div>
                       <div className="font-bold mb-0.5">
@@ -689,7 +695,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
               )}
 
               {/* Assistance Options: 💡 Simple 1-2 line conceptual hint */}
-              <div className="mt-5 pt-4 border-t border-violet-950/40 space-y-3">
+              <div className={`mt-5 pt-4 border-t space-y-3 ${isDarkMode ? 'border-violet-950/40' : 'border-slate-200'}`}>
                 <button
                   id="practice-hint-btn"
                   onClick={() => setShowPracticeHint((prev) => !prev)}
@@ -700,7 +706,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
                         : 'bg-amber-100 border-amber-300 text-amber-900 shadow-xs shadow-amber-200/50'
                       : isDarkMode
                       ? 'bg-[#121829] hover:bg-[#1a233a] border-violet-950/80 text-amber-300/90'
-                      : 'bg-amber-50/60 hover:bg-amber-100 border-amber-200 text-amber-900 font-semibold'
+                      : 'bg-amber-50 hover:bg-amber-100 border-amber-200 text-amber-900 font-bold'
                   }`}
                   title={showPracticeHint ? 'Hide hint' : 'Show conceptual hint'}
                 >
@@ -754,7 +760,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
               className={`p-6 sm:p-7 rounded-3xl border transition-all duration-300 relative overflow-hidden ${
                 isDarkMode
                   ? 'bg-gradient-to-br from-[#0e1424] via-[#12182b] to-[#181133] border-violet-800/60 text-slate-100 shadow-xl shadow-violet-950/30'
-                  : 'bg-gradient-to-br from-white via-indigo-50/50 to-violet-50/70 border-violet-200 text-black shadow-sm'
+                  : 'bg-gradient-to-br from-white via-indigo-50/40 to-violet-50/50 border-indigo-200/80 text-slate-900 shadow-xs'
               }`}
             >
               {/* Background ambient decorative glow */}
@@ -768,19 +774,19 @@ export const LearnView: React.FC<LearnViewProps> = ({
                 <div className="space-y-2.5 max-w-2xl">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-xs shadow-emerald-400 animate-pulse" />
-                    <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400">
+                    <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
                       Dedicated Learning App
                     </span>
                   </div>
 
                   <h3 className="text-lg sm:text-xl font-extrabold tracking-tight flex items-center gap-2.5">
                     <span className="text-xl sm:text-2xl" role="img" aria-label="tree">🌳</span>
-                    <span className={isDarkMode ? 'text-violet-200' : 'text-black'}>
+                    <span className={isDarkMode ? 'text-violet-200' : 'text-slate-950'}>
                       Learn Binary Search Tree
                     </span>
                   </h3>
 
-                  <p className="text-xs sm:text-sm opacity-80 leading-relaxed font-normal">
+                  <p className={`text-xs sm:text-sm leading-relaxed font-normal ${isDarkMode ? 'opacity-80' : 'text-slate-600'}`}>
                     “Explore BST concepts, properties, insertion, searching, traversal, and interactive examples in a dedicated BST learning experience.”
                   </p>
                 </div>
@@ -808,7 +814,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
             className={`p-4 sm:p-5 rounded-3xl border flex flex-col sm:flex-row items-center justify-between gap-3 ${
               isDarkMode
                 ? 'bg-[#0e1424] border-violet-900/40'
-                : 'bg-white border-blue-100 shadow-sm'
+                : 'bg-white border-slate-200/90 shadow-xs'
             }`}
           >
             {/* Mark Completed Status Indicator */}
@@ -820,7 +826,7 @@ export const LearnView: React.FC<LearnViewProps> = ({
                     ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
                     : isDarkMode
                     ? 'bg-[#151c2e] text-slate-300 border-violet-950/70 hover:border-violet-600/50'
-                    : 'bg-blue-50 text-blue-900 border-blue-200 hover:border-blue-300 hover:text-black'
+                    : 'bg-slate-50 text-slate-800 border-slate-200 hover:border-slate-300 hover:bg-slate-100 font-bold'
                 }`}
               >
                 {isCurrentCompleted ? (

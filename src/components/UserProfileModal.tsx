@@ -89,7 +89,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           className={`px-6 py-4.5 flex items-center justify-between border-b ${
             isDarkMode
               ? 'bg-zinc-900/60 border-zinc-800/80'
-              : 'bg-gradient-to-r from-blue-50/80 to-indigo-50/80 border-indigo-100'
+              : 'bg-slate-50 border-slate-200'
           }`}
         >
           <div className="flex items-center gap-3">
@@ -98,13 +98,17 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold tracking-tight">Learner Account</h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                <h3 className="text-base font-bold tracking-tight text-slate-900 dark:text-white">Learner Account</h3>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold flex items-center gap-1 border ${
+                  isDarkMode
+                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                }`}>
                   <ShieldCheck className="w-3 h-3" />
                   Isolated Profile
                 </span>
               </div>
-              <p className="text-xs text-slate-400 font-mono">ID: {currentUser.userId}</p>
+              <p className={`text-xs font-mono ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>ID: {currentUser.userId}</p>
             </div>
           </div>
 
@@ -120,13 +124,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         </div>
 
         {/* Tab Switcher */}
-        <div className={`px-6 pt-4 flex gap-2 border-b ${isDarkMode ? 'border-zinc-800/60' : 'border-slate-100'}`}>
+        <div className={`px-6 pt-4 flex gap-2 border-b ${isDarkMode ? 'border-zinc-800/60' : 'border-slate-200'}`}>
           <button
             onClick={() => setActiveTab('profile')}
             className={`pb-3 px-3 text-xs font-bold transition-all border-b-2 cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'profile'
-                ? 'border-indigo-500 text-indigo-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? isDarkMode ? 'border-indigo-500 text-indigo-400' : 'border-indigo-600 text-indigo-700'
+                : isDarkMode ? 'border-transparent text-slate-400 hover:text-slate-200' : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <User className="w-3.5 h-3.5" />
@@ -137,8 +141,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             onClick={() => setActiveTab('switch')}
             className={`pb-3 px-3 text-xs font-bold transition-all border-b-2 cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'switch'
-                ? 'border-indigo-500 text-indigo-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? isDarkMode ? 'border-indigo-500 text-indigo-400' : 'border-indigo-600 text-indigo-700'
+                : isDarkMode ? 'border-transparent text-slate-400 hover:text-slate-200' : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Users className="w-3.5 h-3.5" />
@@ -149,8 +153,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             onClick={() => setActiveTab('new')}
             className={`pb-3 px-3 text-xs font-bold transition-all border-b-2 cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'new'
-                ? 'border-indigo-500 text-indigo-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? isDarkMode ? 'border-indigo-500 text-indigo-400' : 'border-indigo-600 text-indigo-700'
+                : isDarkMode ? 'border-transparent text-slate-400 hover:text-slate-200' : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Plus className="w-3.5 h-3.5" />
@@ -163,25 +167,25 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           <div className="p-6 space-y-5">
             <div
               className={`p-4 rounded-2xl border ${
-                isDarkMode ? 'bg-zinc-900/50 border-zinc-800' : 'bg-slate-50 border-slate-200/60'
+                isDarkMode ? 'bg-zinc-900/50 border-zinc-800' : 'bg-slate-50 border-slate-200 shadow-xs'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="text-2xl">{currentUser.avatar || '🌳'}</div>
                   <div>
-                    <h4 className="font-bold text-sm leading-tight">{currentUser.displayName}</h4>
-                    <p className="text-xs text-slate-400">Current Active Learner</p>
+                    <h4 className="font-bold text-sm leading-tight text-slate-900 dark:text-white">{currentUser.displayName}</h4>
+                    <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Current Active Learner</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xl font-extrabold text-indigo-400">{currentUser.progress}%</span>
-                  <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Overall Mastery</p>
+                  <span className={`text-xl font-extrabold ${isDarkMode ? 'text-indigo-400' : 'text-indigo-700'}`}>{currentUser.progress}%</span>
+                  <p className={`text-[10px] uppercase tracking-wider font-semibold ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Overall Mastery</p>
                 </div>
               </div>
 
               {/* Progress Bar */}
-              <div className="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
+              <div className={`w-full h-2 rounded-full overflow-hidden ${isDarkMode ? 'bg-zinc-800' : 'bg-slate-200'}`}>
                 <div
                   className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500"
                   style={{ width: `${currentUser.progress}%` }}
@@ -189,27 +193,27 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               </div>
 
               {/* Stat Badges */}
-              <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-zinc-800/40 text-center">
+              <div className={`grid grid-cols-3 gap-2 mt-4 pt-3 border-t text-center ${isDarkMode ? 'border-zinc-800/40' : 'border-slate-200'}`}>
                 <div>
-                  <div className="text-xs font-bold text-indigo-400">{currentUser.completedTopics.length} / 7</div>
-                  <div className="text-[10px] text-slate-400">Topics Done</div>
+                  <div className={`text-xs font-bold ${isDarkMode ? 'text-indigo-400' : 'text-indigo-700'}`}>{currentUser.completedTopics.length} / 7</div>
+                  <div className={`text-[10px] ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Topics Done</div>
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-amber-400">{currentUser.xp} XP</div>
-                  <div className="text-[10px] text-slate-400">Earned XP</div>
+                  <div className={`text-xs font-bold ${isDarkMode ? 'text-amber-400' : 'text-amber-700'}`}>{currentUser.xp} XP</div>
+                  <div className={`text-[10px] ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Earned XP</div>
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-emerald-400">
+                  <div className={`text-xs font-bold ${isDarkMode ? 'text-emerald-400' : 'text-emerald-700'}`}>
                     {currentUser.quizScore ? `${currentUser.quizScore.score}/10` : 'Not Taken'}
                   </div>
-                  <div className="text-[10px] text-slate-400">Quiz Score</div>
+                  <div className={`text-[10px] ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Quiz Score</div>
                 </div>
               </div>
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs text-slate-400 leading-relaxed">
-                <strong className="text-slate-300">Multi-User Isolation Active:</strong> Your progress, XP, completed topics,
+              <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                <strong className={isDarkMode ? 'text-slate-300' : 'text-slate-800'}>Multi-User Isolation Active:</strong> Your progress, XP, completed topics,
                 and quiz answers belong exclusively to this learner profile ({currentUser.userId}) and will never overwrite
                 another learner's state.
               </p>
