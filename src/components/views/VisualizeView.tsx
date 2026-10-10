@@ -347,19 +347,19 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
           </div>
         </div>
 
-        {/* Yellowish-orange points summary badge */}
+        {/* Topic points summary badge in AlgoLearn blue theme */}
         <div className="shrink-0 self-start sm:self-center">
           <span
             id="visualize-topic-points-indicator"
             className={`text-xs font-mono font-bold px-3.5 py-1.5 rounded-xl border flex items-center gap-1.5 shadow-xs ${
               isDarkMode
-                ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
-                : 'bg-amber-50 border-amber-300 text-amber-800'
+                ? 'bg-blue-950/60 border-blue-800/60 text-blue-300'
+                : 'bg-blue-50 border-blue-200 text-blue-700'
             }`}
             title="Visualize Topic Points"
           >
-            <span className={isDarkMode ? 'text-amber-300' : 'text-amber-800'}>Topic Points:</span>
-            <span className={isDarkMode ? 'text-amber-400 font-extrabold' : 'text-amber-700 font-extrabold'}>
+            <span className={isDarkMode ? 'text-blue-300' : 'text-blue-800'}>Topic Points:</span>
+            <span className={isDarkMode ? 'text-blue-400 font-extrabold' : 'text-blue-600 font-extrabold'}>
               {isVideoCompleted ? '30 / 30 pts' : '0 / 30 pts'}
             </span>
           </span>

@@ -79,13 +79,25 @@ export const getActiveUserId = (): string => {
     }
   } catch {}
 
-  // 3. Check in-memory session map
+  // 3. Check persistent localStorage for last active user ID (preserves identity & scores across page refreshes)
+  try {
+    const localUid = localStorage.getItem(LOCAL_USER_KEY);
+    if (localUid && localUid.trim()) {
+      const cleanUid = localUid.trim();
+      try {
+        sessionStorage.setItem(SESSION_USER_KEY, cleanUid);
+      } catch {}
+      return cleanUid;
+    }
+  } catch {}
+
+  // 4. Check in-memory session map
   const inMemSession = memoryStorageMap.get(SESSION_USER_KEY);
   if (inMemSession && inMemSession.trim()) {
     return inMemSession.trim();
   }
 
-  // 4. Fresh visitor: generate a completely new isolated user ID
+  // 5. Fresh visitor: generate a completely new isolated user ID
   const newUserId = generateUniqueUserId();
   setActiveUserId(newUserId);
   return newUserId;

@@ -6,7 +6,7 @@ import { UserProfileModal } from './components/UserProfileModal';
 import { HomeView } from './components/views/HomeView';
 import { LearnView } from './components/views/LearnView';
 import { VisualizeView } from './components/views/VisualizeView';
-import { QuizView, clearSavedQuizState } from './components/views/QuizView';
+import { QuizView, clearSavedQuizState, calculateTotalQuizPoints } from './components/views/QuizView';
 import { ProgressView } from './components/views/ProgressView';
 import { FloatingChatButton } from './components/FloatingChatButton';
 import {
@@ -148,7 +148,18 @@ export default function App() {
   const [quizScore, setQuizScore] = useState<{ score: number; total: number } | null>(() => {
     try {
       const saved = getUserItem(activeUserId, 'quiz_score');
-      return saved ? JSON.parse(saved) : null;
+      if (saved) return JSON.parse(saved);
+      const quizState = getUserItem(activeUserId, 'quiz_state');
+      if (quizState) {
+        const parsed = JSON.parse(quizState);
+        const pts = calculateTotalQuizPoints(
+          parsed.confirmedQuestions || {},
+          parsed.questionTimeouts || {},
+          parsed.userAnswers || {}
+        );
+        return { score: pts, total: 70 };
+      }
+      return null;
     } catch {
       return null;
     }
@@ -170,6 +181,7 @@ export default function App() {
 
   const [quizKey, setQuizKey] = useState<number>(0);
   const [learnKey, setLearnKey] = useState<number>(0);
+  const [isInitialLoadDone, setIsInitialLoadDone] = useState<boolean>(false);
   const [completedVisualizations, setCompletedVisualizations] = useState<string[]>(() => {
     try {
       const saved = getUserItem(activeUserId, 'completed_visualizations');
@@ -188,10 +200,31 @@ export default function App() {
         loadedUserIdRef.current = activeUserId;
         setCurrentUser(data);
         setCompletedTopics(data.completedTopics || []);
-        setQuizScore(data.quizScore || null);
+
+        // Accurately restore quiz score from server or client backup
+        const restoredQuizScore = data.quizScore || (() => {
+          try {
+            const saved = getUserItem(activeUserId, 'quiz_score');
+            if (saved) return JSON.parse(saved);
+            const quizState = getUserItem(activeUserId, 'quiz_state');
+            if (quizState) {
+              const parsed = JSON.parse(quizState);
+              const pts = calculateTotalQuizPoints(
+                parsed.confirmedQuestions || {},
+                parsed.questionTimeouts || {},
+                parsed.userAnswers || {}
+              );
+              return { score: pts, total: 70 };
+            }
+          } catch {}
+          return null;
+        })();
+
+        setQuizScore(restoredQuizScore);
         setQuizProgress(data.quizProgress || { completed: 0, total: 14 });
         setIsVideoCompleted(Boolean(data.videoCompleted));
         setCompletedVisualizations(data.completedVisualizations || []);
+        setIsInitialLoadDone(true);
       }
       const users = await fetchAllUsers();
       if (isMounted) {
@@ -206,9 +239,9 @@ export default function App() {
 
   // Synchronize active user state to backend and update window evaluation properties
   useEffect(() => {
-    // CRITICAL GUARD: Only sync if current React state matches activeUserId
-    // Prevents cross-user progress contamination during user switching
-    if (loadedUserIdRef.current !== activeUserId) {
+    // CRITICAL GUARD: Only sync if initial load is done AND current React state matches activeUserId
+    // Prevents overwriting persisted scores with default empty values during page refresh
+    if (!isInitialLoadDone || loadedUserIdRef.current !== activeUserId) {
       return;
     }
 
@@ -274,7 +307,7 @@ export default function App() {
         quizScore: currentQuizPts,
       };
     }
-  }, [completedTopics, quizScore, quizProgress, isVideoCompleted, completedVisualizations, activeUserId]);
+  }, [completedTopics, quizScore, quizProgress, isVideoCompleted, completedVisualizations, activeUserId, isInitialLoadDone]);
 
   const handleSwitchUser = async (targetUserId: string) => {
     if (!targetUserId || !targetUserId.trim()) return;

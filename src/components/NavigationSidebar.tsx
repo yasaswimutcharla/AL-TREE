@@ -231,11 +231,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
                   {isNavHovered && (
                     <span
                       className={`ml-auto text-xs font-mono font-bold px-2.5 py-0.5 rounded-full select-none transition-all duration-200 animate-fadeIn ${
-                        item.id === 'progress'
-                          ? isDarkMode
-                            ? 'bg-amber-500/15 text-amber-300 border border-amber-500/40'
-                            : 'bg-amber-100 text-amber-900 border border-amber-300'
-                          : isActive
+                        isActive
                           ? isDarkMode
                             ? 'bg-zinc-800 text-blue-300 border border-zinc-700'
                             : 'bg-blue-100 text-blue-800 border border-blue-200'

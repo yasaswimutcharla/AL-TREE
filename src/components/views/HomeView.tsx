@@ -11,7 +11,8 @@ import {
   PlusCircle,
   Activity,
   GitBranch,
-  ArrowRight
+  ArrowRight,
+  Rocket
 } from 'lucide-react';
 import { AlgoLearnCapIcon } from '../AlgoLearnLogo';
 
@@ -66,7 +67,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 Tree-Non linear{' '}
               </span>
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#2563EB] via-[#4F46E5] to-[#7C3AED]">
-                datastructure
+                Datastructure
               </span>
             </h1>
 
@@ -477,7 +478,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* ==================================================================== */}
-      {/* 3. WHY BINARY SEARCH TREES MATTER                                    */}
+      {/* 3. WHY TREE MASTERY MATTERS                                          */}
       {/* ==================================================================== */}
       <section
         id="section-why-trees-matter"
@@ -498,13 +499,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <Star className="w-4 h-4" />
           </div>
           <h2 className="text-xl sm:text-2xl font-black tracking-tight">
-            3. Why Binary Search Trees Matter
+            3. Why Tree Mastery Matters
           </h2>
         </div>
 
-        {/* 3 Pillar Cards matching Screenshot (47) */}
+        {/* 3 Pillar Cards matching screenshot with icons */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Card 1: Fast O(log n) Search */}
+          {/* Card 1: Unlocks O(log n) Search */}
           <div
             className={`p-6 rounded-2xl border transition-all duration-200 ${
               isDarkMode
@@ -512,19 +513,22 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 : 'bg-slate-50/80 border-slate-200/90 hover:border-indigo-300 hover:bg-white shadow-2xs'
             }`}
           >
+            <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-4 shadow-sm shadow-blue-500/20">
+              <Zap className="w-5 h-5" />
+            </div>
             <h3 className={`text-base font-bold mb-2 ${
               isDarkMode ? 'text-slate-100' : 'text-slate-900'
             }`}>
-              Fast O(log n) Search
+              Unlocks O(log n) Search
             </h3>
             <p className={`text-xs sm:text-sm leading-relaxed ${
               isDarkMode ? 'text-slate-400' : 'text-slate-600'
             }`}>
-              Eliminate half of the remaining search space with every single node comparison, guaranteeing high speed even across millions of items.
+              Trees enable binary search, logarithmic lookups, AVL/Red-Black self-balancing, and optimal CPU cache performance.
             </p>
           </div>
 
-          {/* Card 2: Dynamic Organization */}
+          {/* Card 2: Advanced DSA Preprocessing / Hierarchical Modeling */}
           <div
             className={`p-6 rounded-2xl border transition-all duration-200 ${
               isDarkMode
@@ -532,19 +536,22 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 : 'bg-slate-50/80 border-slate-200/90 hover:border-indigo-300 hover:bg-white shadow-2xs'
             }`}
           >
+            <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center mb-4 shadow-sm shadow-indigo-500/20">
+              <GitBranch className="w-5 h-5" />
+            </div>
             <h3 className={`text-base font-bold mb-2 ${
               isDarkMode ? 'text-slate-100' : 'text-slate-900'
             }`}>
-              Dynamic Organization
+              Advanced DSA Preprocessing
             </h3>
             <p className={`text-xs sm:text-sm leading-relaxed ${
               isDarkMode ? 'text-slate-400' : 'text-slate-600'
             }`}>
-              Insert and delete nodes dynamically without needing continuous memory block reallocations or costly linear shifts.
+              Kruskal's MST, Segment Trees, Huffman encoding, and priority heaps all rely on hierarchical tree-structured logic.
             </p>
           </div>
 
-          {/* Card 3: Real-World Applications */}
+          {/* Card 3: Production Operating Systems */}
           <div
             className={`p-6 rounded-2xl border transition-all duration-200 ${
               isDarkMode
@@ -552,17 +559,57 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 : 'bg-slate-50/80 border-slate-200/90 hover:border-indigo-300 hover:bg-white shadow-2xs'
             }`}
           >
+            <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center mb-4 shadow-sm shadow-purple-500/20">
+              <Globe className="w-5 h-5" />
+            </div>
             <h3 className={`text-base font-bold mb-2 ${
               isDarkMode ? 'text-slate-100' : 'text-slate-900'
             }`}>
-              Real-World Applications
+              Production Operating Systems
             </h3>
             <p className={`text-xs sm:text-sm leading-relaxed ${
               isDarkMode ? 'text-slate-400' : 'text-slate-600'
             }`}>
-              Underpins database indexing (B-Trees, AVL, Red-Black), syntax parsers, file system hierarchies, and auto-complete search engines.
+              Database ORDER BY queries (B-Trees), search engine ranking pipelines, and the Linux kernel scheduler run on tree structures.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/* 4. READY TO MASTER TREES?                                            */}
+      {/* ==================================================================== */}
+      <section
+        id="section-ready-to-master-trees"
+        className={`p-6 sm:p-8 rounded-3xl border transition-all duration-200 ${
+          isDarkMode
+            ? 'bg-black border-zinc-800 text-slate-100'
+            : 'bg-white border-slate-200/90 text-slate-900 shadow-xs'
+        }`}
+      >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shrink-0 text-white shadow-md shadow-blue-500/20">
+              <Rocket className="w-7 h-7" />
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight mb-1">
+                4. Ready to Master Trees?
+              </h2>
+              <p className={`text-xs sm:text-sm leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                Begin your journey by understanding comparisons, hierarchical structures, node traversals, and modern balanced tree engines.
+              </p>
+            </div>
+          </div>
+
+          <button
+            id="start-learning-overview-btn"
+            onClick={() => onNavigate('learn')}
+            className="shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white font-bold text-sm flex items-center gap-2 shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+          >
+            <span>Start Learning</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </section>
     </div>

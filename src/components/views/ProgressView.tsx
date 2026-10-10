@@ -6,9 +6,10 @@ import {
   Video,
   BrainCircuit,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Star
 } from 'lucide-react';
-import { getActiveUserId } from '../../utils/userStorage';
+import { getActiveUserId, getUserItem } from '../../utils/userStorage';
 import { QUIZ_QUESTIONS, TREE_TOPICS } from '../../data/treeData';
 import {
   loadSavedQuizState,
@@ -65,7 +66,16 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
   // Total score starts at 0 / 100 for a new user and never exceeds 100.
   // =========================================================================
   const totalVizPointsEarned = isVideoCompleted ? 30 : 0; // 0 or 30 pts
-  const totalQuizPointsEarned = calculateTotalQuizPoints(confirmed, questionTimeouts, userAnswers); // 0 to 70 pts
+  const calculatedQuizPts = calculateTotalQuizPoints(confirmed, questionTimeouts, userAnswers);
+  const totalQuizPointsEarned = Object.keys(confirmed).length > 0
+    ? calculatedQuizPts
+    : (quizScore?.score ?? (() => {
+        try {
+          const raw = getUserItem(effectiveUserId, 'quiz_score');
+          if (raw) return JSON.parse(raw).score;
+        } catch {}
+        return 0;
+      })());
   const totalScoreEarned = Math.min(100, Math.max(0, totalVizPointsEarned + totalQuizPointsEarned));
 
   const vizPercent = isVideoCompleted ? 100 : 0;
@@ -229,8 +239,8 @@ export const ProgressView: React.FC<ProgressViewProps> = ({
                 : 'bg-slate-50 border-slate-200/90 text-slate-900 shadow-xs'
             }`}
           >
-            <div className="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-500">
-              <Sparkles className="w-4.5 h-4.5 fill-amber-400 text-amber-500" />
+            <div className="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-500 shadow-sm shadow-amber-500/20">
+              <Star className="w-4.5 h-4.5 fill-amber-400 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.85)] animate-pulse" />
             </div>
             <div>
               <div className="text-xl sm:text-2xl font-black font-mono tracking-tight leading-none">
